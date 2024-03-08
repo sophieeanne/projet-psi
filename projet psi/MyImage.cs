@@ -11,12 +11,24 @@ namespace projet_psi
 {
     internal class MyImage
     {
-        string myfile;
-
-        public MyImage(string file)
+        int taille;
+        int tailleOffset;
+        int largeur;
+        int hauteur;
+        int nbBits;
+        Pixel[,] image;
+        public MyImage(string myfile)
         {
-            myfile = file;
+            byte[] file = File.ReadAllBytes(myfile);
+            if (file[0]='B' && file[1]='M')
+            {
 
+            }
+        }
+
+        public void From_Image_To_File(string file)
+        {
+            
         }
     }
 }
