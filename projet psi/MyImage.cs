@@ -166,6 +166,67 @@ namespace projet_psi
 
 
 
+        public MyImage AppliquerMatriceConvolution(double[,] matriceConvolution)
+        {
+            // Assumer que matriceConvolution est une matrice 3x3
+            int width = this.largeur;
+            int height = this.hauteur;
+
+            Pixel[,] newImage = new Pixel[height, width];
+
+
+            // Définir les bordures en noir
+            Pixel blackPixel = new Pixel(0, 0, 0);
+
+            // Bordure supérieure et inférieure
+            for (int x = 0; x < width; x++)
+            {
+                newImage[0, x] = blackPixel; // Bordure supérieure
+                newImage[height - 1, x] = blackPixel; // Bordure inférieure
+            }
+
+            // Bordure gauche et droite
+            for (int y = 0; y < height; y++)
+            {
+                newImage[y, 0] = blackPixel; // Bordure gauche
+                newImage[y, width - 1] = blackPixel; // Bordure droite
+            }
+
+
+
+
+            for (int y = 1; y < height - 1; y++)
+            {
+                for (int x = 1; x < width - 1; x++)
+                {
+                    double red = 0.0, green = 0.0, blue = 0.0;
+
+                    for (int filterY = 0; filterY < 3; filterY++)
+                    {
+                        for (int filterX = 0; filterX < 3; filterX++)
+                        {
+                            int imageX = (x - 1 + filterX + width) % width;
+                            int imageY = (y - 1 + filterY + height) % height;
+
+                            Pixel pixel = this.image[imageY, imageX];
+
+                            red += pixel.R * matriceConvolution[filterY, filterX];
+                            green += pixel.G * matriceConvolution[filterY, filterX];
+                            blue += pixel.B * matriceConvolution[filterY, filterX];
+                        }
+                    }
+
+                    // Clamp les valeurs pour qu'elles soient dans l'intervalle [0, 255]
+                    int r = Math.Max(0, Math.Min(255, (int)Math.Round(red)));
+                    int g = Math.Max(0, Math.Min(255, (int)Math.Round(green)));
+                    int b = Math.Max(0, Math.Min(255, (int)Math.Round(blue)));
+
+                    newImage[y, x] = new Pixel((byte)r, (byte)g, (byte)b);
+                }
+            }
+
+            return new MyImage(newImage, width, height);
+        }
 
 
         public MyImage Rotation(int angle, MyImage img)
@@ -178,6 +239,14 @@ namespace projet_psi
             }
 
         }
+
+
+
+
+
+
+
+
 
 
 
