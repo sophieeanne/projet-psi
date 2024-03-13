@@ -130,11 +130,11 @@ namespace projet_psi
 
 
 
-        public MyImage AgrandirImage(int Factor)
+        public MyImage AgrandirImage(double factor)
         {
-            // Nouvelles dimensions
-            int newLargeur = this.largeur * Factor;
-            int newHauteur = this.hauteur * Factor;
+            // Calcul des nouvelles dimensions arrondies au plus proche entier
+            int newLargeur = (int)Math.Round(this.largeur * factor);
+            int newHauteur = (int)Math.Round(this.hauteur * factor);
 
             // Nouvelle image agrandie
             Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
@@ -144,8 +144,12 @@ namespace projet_psi
                 for (int x = 0; x < newLargeur; x++)
                 {
                     // Trouver le pixel correspondant dans l'image originale
-                    int oldX = x / Factor;
-                    int oldY = y / Factor;
+                    int oldX = (int)(x / factor);
+                    int oldY = (int)(y / factor);
+
+                    // S'assurer que les coordonnées calculées ne dépassent pas les dimensions originales
+                    oldX = Math.Min(oldX, this.largeur - 1);
+                    oldY = Math.Min(oldY, this.hauteur - 1);
 
                     // Répéter le pixel correspondant dans la nouvelle image
                     newImage[y, x] = this.image[oldY, oldX];

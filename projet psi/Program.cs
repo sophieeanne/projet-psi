@@ -4,4 +4,5 @@ using projet_psi;
 Console.WriteLine("Hello, World!");
 MyImage image = new MyImage("images/lac.bmp");
 
-image.AgrandirImage(3,2).From_Image_To_File("images/copie.bmp");
+image.AgrandirImage(0.4).From_Image_To_File("images/copie.bmp");
+
