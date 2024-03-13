@@ -112,7 +112,15 @@ namespace projet_psi
                 }   
             }
             return octets;
+        }
+
+        public MyImage Rotation(int angle, MyImage)
+        {
+            int x = largeur;
+            int y = hauteur;
+
 
         }
+
     }
 }
