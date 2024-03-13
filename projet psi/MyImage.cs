@@ -55,7 +55,47 @@ namespace projet_psi
 
         public void From_Image_To_File(string file)
         {
-            
+            using (var fs = new FileStream(file, FileMode.Create))
+            using (var writer = new BinaryWriter(fs))
+            {
+                // En-tête de fichier BMP
+                writer.Write(new char[] { 'B', 'M' }); // Signature
+                int fileSize = 54 + (largeur * hauteur * 3); // Taille du fichier avec en-tête
+                writer.Write(fileSize); // Taille du fichier
+                writer.Write(0); // Champ réservé
+                writer.Write(54); // Offset des données de l'image (en-tête inclus)
+
+                // En-tête DIB (BITMAPINFOHEADER)
+                writer.Write(40); // Taille de l'en-tête DIB
+                writer.Write(largeur); // Largeur
+                writer.Write(hauteur); // Hauteur
+                writer.Write((short)1); // Nombre de plans de couleur
+                writer.Write((short)24); // Bits par pixel
+                writer.Write(0); // Pas de compression
+                writer.Write(largeur * hauteur * 3); // Taille de l'image
+                writer.Write(0); // Résolution horizontale (pixels/mètre)
+                writer.Write(0); // Résolution verticale (pixels/mètre)
+                writer.Write(0); // Nombre de couleurs dans la palette
+                writer.Write(0); // Toutes les couleurs sont importantes
+
+                // Écriture des données de l'image (pixel par pixel)
+                for (int y = hauteur - 1; y >= 0; y--) // BMP stocke les pixels de bas en haut
+                {
+                    for (int x = 0; x < largeur; x++)
+                    {
+                        Pixel pixel = image[y, x];
+                        writer.Write(pixel.B);
+                        writer.Write(pixel.G);
+                        writer.Write(pixel.R);
+                    }
+
+                    // Padding pour aligner chaque ligne sur un multiple de 4 octets
+                    for (int padding = (largeur * 3) % 4; padding > 0 && padding < 4; padding--)
+                    {
+                        writer.Write((byte)0);
+                    }
+                }
+            }
         }
     }
 }
