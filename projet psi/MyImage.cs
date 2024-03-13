@@ -228,19 +228,23 @@ namespace projet_psi
             return new MyImage(newImage, width, height);
         }
 
-
         public MyImage Rotation(int angle, MyImage img)
         {
             Pixel[,] imrot = null;
-            if (image.image != null)
+            double rad = angle * angle * Math.PI / 180.0;
+            double cosT = Math.Cos(rad);
+            double sinT = Math.Sin(rad);
+            double[,] matricerotation = new double[2, 2] { { cosT, -sinT }, { sinT, cosT } };
+            if (img.image != null)
             {
-                //rotation de l'image de 90° ou 270°
-                if (angle) ;
+                int nv_larg =
+                int nv_long =
+
             }
+            return null;
+
 
         }
-
-
 
 
 
