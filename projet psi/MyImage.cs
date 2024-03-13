@@ -114,13 +114,17 @@ namespace projet_psi
             return octets;
         }
 
-        public MyImage Rotation(int angle, MyImage)
+        public MyImage Rotation(int angle, MyImage img)
         {
-            int x = largeur;
-            int y = hauteur;
+            Pixel[,] imrot = null;
+            if(image.image !=null)
+            {
+                //rotation de l'image de 90° ou 270°
+                if(angle)
+            }
 
+        }   
 
-        }
 
     }
 }
