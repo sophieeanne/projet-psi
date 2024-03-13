@@ -31,7 +31,7 @@ namespace projet_psi
 
                 nbBits = BitConverter.ToInt32(file, 28);
 
-
+                image = new Pixel[hauteur, largeur];
 
                 //remplissage de la matrice de pixels
                 for (int y = 0; y < hauteur; y++)
@@ -53,50 +53,55 @@ namespace projet_psi
             }
         }
 
-        public void From_Image_To_File(string file)
+        public void From_Image_To_File(string filePath)
         {
-            using (var fs = new FileStream(file, FileMode.Create))
-            using (var writer = new BinaryWriter(fs))
+            int paddingPerRow = (4 - (largeur * 3 % 4)) % 4;
+            int fileSize = 54 + ((largeur * 3 + paddingPerRow) * hauteur);
+
+            using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
             {
-                // En-tête de fichier BMP
-                writer.Write(new char[] { 'B', 'M' }); // Signature
-                int fileSize = 54 + (largeur * hauteur * 3); // Taille du fichier avec en-tête
-                writer.Write(fileSize); // Taille du fichier
-                writer.Write(0); // Champ réservé
-                writer.Write(54); // Offset des données de l'image (en-tête inclus)
+                fs.WriteByte((byte)'B');
+                fs.WriteByte((byte)'M');
+                WriteInt32ToFileStream(fs, fileSize);
+                WriteInt32ToFileStream(fs, 0);
+                WriteInt32ToFileStream(fs, 54);
+                WriteInt32ToFileStream(fs, 40);
+                WriteInt32ToFileStream(fs, largeur);
+                WriteInt32ToFileStream(fs, hauteur);
+                fs.WriteByte((byte)1);
+                fs.WriteByte((byte)0);
+                fs.WriteByte((byte)24);
+                fs.WriteByte((byte)0);
+                WriteInt32ToFileStream(fs, 0);
+                WriteInt32ToFileStream(fs, fileSize - 54);
+                WriteInt32ToFileStream(fs, 0);
+                WriteInt32ToFileStream(fs, 0);
+                WriteInt32ToFileStream(fs, 0);
+                WriteInt32ToFileStream(fs, 0);
 
-                // En-tête DIB (BITMAPINFOHEADER)
-                writer.Write(40); // Taille de l'en-tête DIB
-                writer.Write(largeur); // Largeur
-                writer.Write(hauteur); // Hauteur
-                writer.Write((short)1); // Nombre de plans de couleur
-                writer.Write((short)24); // Bits par pixel
-                writer.Write(0); // Pas de compression
-                writer.Write(largeur * hauteur * 3); // Taille de l'image
-                writer.Write(0); // Résolution horizontale (pixels/mètre)
-                writer.Write(0); // Résolution verticale (pixels/mètre)
-                writer.Write(0); // Nombre de couleurs dans la palette
-                writer.Write(0); // Toutes les couleurs sont importantes
-
-                // Écriture des données de l'image (pixel par pixel)
-                for (int y = hauteur - 1; y >= 0; y--) // BMP stocke les pixels de bas en haut
+                for (int y = 0; y <hauteur; y++)
                 {
                     for (int x = 0; x < largeur; x++)
                     {
                         Pixel pixel = image[y, x];
-                        writer.Write(pixel.B);
-                        writer.Write(pixel.G);
-                        writer.Write(pixel.R);
+                        fs.WriteByte((byte)pixel.B);
+                        fs.WriteByte((byte)pixel.G);
+                        fs.WriteByte((byte)pixel.R);
                     }
-
-                    // Padding pour aligner chaque ligne sur un multiple de 4 octets
-                    for (int padding = (largeur * 3) % 4; padding > 0 && padding < 4; padding--)
+                    for (int p = 0; p < paddingPerRow; p++)
                     {
-                        writer.Write((byte)0);
+                        fs.WriteByte(0);
                     }
                 }
             }
         }
+
+        private void WriteInt32ToFileStream(FileStream fs, int value)
+        {
+            byte[] bytes = BitConverter.GetBytes(value);
+            fs.Write(bytes, 0, bytes.Length);
+        }
+
 
         public byte[] Convertir_Int_To_Endian(int val)
         {
