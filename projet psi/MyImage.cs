@@ -57,5 +57,22 @@ namespace projet_psi
         {
             
         }
+
+        public byte[] Convertir_Int_To_Endian(int val)
+        {
+            byte[] octets = BitConverter.GetBytes(val); //convertit l'entier en tableau de bytes
+            if (BitConverter.IsLittleEndian) //si le système est en little endian
+            {
+                int l = octets.Length;
+                for(int i = 0; i < l/2; i++) //inverse les octets
+                {
+                    byte temp = octets[i];
+                    octets[i] = octets[l - i - 1];
+                    octets[l - i - 1] = temp;
+                }   
+            }
+            return octets;
+
+        }
     }
 }
