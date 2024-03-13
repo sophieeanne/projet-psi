@@ -30,6 +30,22 @@ namespace projet_psi
                 hauteur = BitConverter.ToInt32(file, 22);
 
                 nbBits = BitConverter.ToInt32(file, 28);
+
+
+
+                //remplissage de la matrice de pixels
+                for (int y = 0; y < hauteur; y++)
+                {
+                    for (int x = 0; x < largeur; x++)
+                    {
+                        int pixelIndex = tailleOffset + (y * largeur + x) * 3; //trouve l'index du pixel dans les bytes
+                        byte blue = file[pixelIndex];  
+                        byte green = file[pixelIndex + 1];
+                        byte red = file[pixelIndex + 2];
+
+                        image[y, x] = new Pixel(red, green, blue);
+                    }
+                }
             }
             else
             {
