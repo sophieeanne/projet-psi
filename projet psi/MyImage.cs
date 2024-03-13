@@ -20,9 +20,20 @@ namespace projet_psi
         public MyImage(string myfile)
         {
             byte[] file = File.ReadAllBytes(myfile);
-            if (file[0]='B' && file[1]='M')
+            if (file[0]=='B' && file[1]=='M')
             {
+                taille = BitConverter.ToInt32(file, 2);
 
+                tailleOffset = BitConverter.ToInt32(file, 10);
+
+                largeur = BitConverter.ToInt32(file, 18);
+                hauteur = BitConverter.ToInt32(file, 22);
+
+                nbBits = BitConverter.ToInt32(file, 28);
+            }
+            else
+            {
+                Console.WriteLine("Fichier erroné");
             }
         }
 
