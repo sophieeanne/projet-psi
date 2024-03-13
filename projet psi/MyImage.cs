@@ -53,6 +53,15 @@ namespace projet_psi
             }
         }
 
+
+        // Constructeur pour créer une instance MyImage à partir d'une matrice de pixels
+        public MyImage(Pixel[,] image, int width, int height)
+        {
+            this.image = image;
+            this.largeur = width;
+            this.hauteur = height;
+
+        }
         public void From_Image_To_File(string filePath)
         {
             int paddingPerRow = (4 - (largeur * 3 % 4)) % 4;
@@ -79,7 +88,7 @@ namespace projet_psi
                 WriteInt32ToFileStream(fs, 0);
                 WriteInt32ToFileStream(fs, 0);
 
-                for (int y = 0; y <hauteur; y++)
+                for (int y = 0; y <hauteur; y++ )
                 {
                     for (int x = 0; x < largeur; x++)
                     {
@@ -119,16 +128,59 @@ namespace projet_psi
             return octets;
         }
 
+
+
+        public MyImage AgrandirImage(int Factor)
+        {
+            // Nouvelles dimensions
+            int newLargeur = this.largeur * Factor;
+            int newHauteur = this.hauteur * Factor;
+
+            // Nouvelle image agrandie
+            Pixel[,] newImage = new Pixel[newHauteur, newLargeur];
+
+            for (int y = 0; y < newHauteur; y++)
+            {
+                for (int x = 0; x < newLargeur; x++)
+                {
+                    // Trouver le pixel correspondant dans l'image originale
+                    int oldX = x / Factor;
+                    int oldY = y / Factor;
+
+                    // Répéter le pixel correspondant dans la nouvelle image
+                    newImage[y, x] = this.image[oldY, oldX];
+                }
+            }
+
+            // Créer une nouvelle instance de MyImage avec la nouvelle image agrandie
+            return new MyImage(newImage, newLargeur, newHauteur);
+        }
+
+
+
+
+
+
+
+
+
         public MyImage Rotation(int angle, MyImage img)
         {
             Pixel[,] imrot = null;
-            if(image.image !=null)
+            if (image.image != null)
             {
                 //rotation de l'image de 90° ou 270°
-                if(angle)
+                if (angle) ;
             }
 
-        }   
+        }
+
+
+
+
+
+
+
 
 
     }
