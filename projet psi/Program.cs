@@ -29,7 +29,7 @@ MyImage image_decodee2 = image_codee.Decoder_Image2(image_codee);
 Console.WriteLine("y'a une sortie");
 //rota.From_Image_To_File("images/testrotation.bmp");
 
-
+TestMandelbrot();
 
 //MyImage image = new MyImage("images/lac.bmp");
 //MyImage rota = image.Rotation(90, image); // Utilisation d'une instance différente de MyImage pour l'image de sortie
