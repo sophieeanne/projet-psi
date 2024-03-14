@@ -162,13 +162,55 @@ namespace projet_psi
 
 
 
+        // pour mandelbrot: fonction récursive qui fait z^2+c
+        //pour l'instant complexe = tableau de double, si le temps je ferai une classe
+        private int MandelRecursif(double[] z,double[] c, int n)
+        {
+            if ((Math.Sqrt(z[0] * z[0] + z[1] * z[1])>2 ) || n>16)
+            {
+                return (n);
+            }
+            double a = z[0];
+            double b = z[1];
+
+            double d = a*a-b*b;
+            double e = -2 * a * b;
+            double[] r = { d + c[0], e + c[1] }; //^2+c
+            return MandelRecursif(r,c,n+1);
+
+        }
+        
+        public MyImage Mandelbrot(double echelle, double[] c, int hauteur, int largeur, double contraste )
+        {
+            Pixel[,] mandel = new Pixel[hauteur, largeur];
+            for(int i = 0; i < largeur; i++)
+            {
+                for(int j = 0; j<hauteur; j++)
+                {
+                    double coeffcouleur = (double)5;
+                    //on crée le nombre complexe associé a chaque pixel
+                    double reel = echelle * (i - largeur / 2);
+                    double imaginaire = echelle * (j - hauteur / 2);
+                    //Console.WriteLine(reel +""+ imaginaire);
+                    double[] z = { reel, imaginaire  };
+                    int iter = (MandelRecursif(z, c, 0));
+                    Console.WriteLine(iter);
+                    double intensite1 = (double)255 / Math.Pow((iter+1),contraste);
+                    double intensite2 = (double)255 / Math.Pow((iter+2), contraste);
+                    double intensite3 = (double)255 / Math.Pow(iter, contraste); //du bricolage pour avoir des couleurs
 
 
+                    mandel[j, i] = new Pixel((byte)(1-intensite1), (byte)(1-intensite2), (byte)(1-intensite3)); 
+
+                }
+            }
+            return new MyImage(mandel, largeur, hauteur);
+        }
 
 
         public MyImage AppliquerMatriceConvolution(double[,] matriceConvolution)
         {
-            // Assumer que matriceConvolution est une matrice 3x3
+            // matriceConvolution est une matrice 3x3
             int width = this.largeur;
             int height = this.hauteur;
 
