@@ -234,20 +234,22 @@ namespace projet_psi
                 return null;
             }
 
+            //transformer les angles en radian
             double rad = angle * Math.PI / 180.0;
             double cosT = Math.Cos(rad);
             double sinT = Math.Sin(rad);
 
+            //calcule les nouvelles dimensions de l'image
             int nv_larg = (int)Math.Ceiling(Math.Abs(img.largeur * cosT) + Math.Abs(img.hauteur * sinT));
             int nv_haut = (int)Math.Ceiling(Math.Abs(img.largeur * sinT) + Math.Abs(img.hauteur * cosT));
+            
             double ox = img.largeur / 2.0;
             double oy = img.hauteur / 2.0;
-            double nx = nv_larg / 2.0;
-            double ny = nv_haut / 2.0;
+
             
             Pixel[,] imrot = new Pixel[nv_haut, nv_larg];
             
-
+            //remplir la matrice en blanc (utile si l'angle n'est pas 90°)
             for (int i = 0; i < nv_haut; i++)
             {
                 for (int j = 0; j < nv_larg; j++)
@@ -260,19 +262,32 @@ namespace projet_psi
             {
                 for (int j = 0; j < img.largeur; j++)
                 {
-                    int x = (int)Math.Round(cosT * (j - ox) - sinT * (i - oy) + nx);
-                    int y = (int)Math.Round(sinT * (j - ox) + cosT * (i - oy) + ny);
-
+                    //rotation par rapport au centre de la matrice : on mutliplie coordonnée par la matrice de rotation
+                    int x = (int)Math.Round(cosT * (j - ox) - sinT * (i - oy) + nv_larg/2.0);
+                    int y = (int)Math.Round(sinT * (j - ox) + cosT * (i - oy) + nv_haut/2.0);
+                    
+                    //on vérifie si c'est dans les dimensions de l'image
                     if (x >= 0 && y >= 0 && x < nv_larg && y < nv_haut)
                     {
                         imrot[y, x] = img.image[i, j]; 
                     }
                 }
             }
-            MyImage Image_rotation = new MyImage("images/Sortie.bmp");
-            Image_rotation.image = imrot;
-            return Image_rotation;
+            return Enregistrer_Image_Rotation(imrot, nv_larg, nv_haut, "images/Sortie.bmp");
+           
         }
+
+        //retourne une nouvelle instance de myimage (l'image avec rotation) et l'enregistre dans le dossier image
+        public MyImage Enregistrer_Image_Rotation(Pixel[,] image, int largeur, int hauteur,string chemin)
+        {
+            MyImage nvimage = new MyImage(chemin);
+            nvimage.image = image;
+            nvimage.largeur = largeur;
+            nvimage.hauteur = hauteur;
+            nvimage.From_Image_To_File("images/image_avec_rotation.bmp");
+            return nvimage;
+        }
+
 
 
 
