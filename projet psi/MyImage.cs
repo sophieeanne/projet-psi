@@ -303,8 +303,8 @@ namespace projet_psi
 
         public MyImage Coder_Image(MyImage image1, MyImage image2)
         {
-            int h = Math.Max(image1.hauteur, image2.hauteur);
-            int l = Math.Max(image1.largeur, image2.largeur);
+            int h = Math.Min(image1.hauteur, image2.hauteur);
+            int l = Math.Min(image1.largeur, image2.largeur);
             Pixel[,] image = new Pixel[h, l];
             for(int i=0; i<h; i++)
             {
@@ -314,9 +314,9 @@ namespace projet_psi
                     {
                         Pixel p1 = image1.image[i, j];
                         Pixel p2 = image2.image[i, j];
-                        int r = concatener(quatre_premiers_chiffres(p1.R), quatre_derniers_chiffres(p2.R));
-                        int g = concatener(quatre_premiers_chiffres(p1.G), quatre_derniers_chiffres(p2.G));
-                        int b = concatener(quatre_premiers_chiffres(p1.B), quatre_derniers_chiffres(p2.B));
+                        int r = concatener(quatre_premiers_chiffres(p1.R), quatre_premiers_chiffres(p2.R));
+                        int g = concatener(quatre_premiers_chiffres(p1.G), quatre_premiers_chiffres(p2.G));
+                        int b = concatener(quatre_premiers_chiffres(p1.B), quatre_premiers_chiffres(p2.B));
                         image[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
                     }
                     else
@@ -336,17 +336,74 @@ namespace projet_psi
             nvimage.From_Image_To_File("images/image_codee.bmp");
             return nvimage;
         }
-        public int Convertir_byte_to_binaire(byte b)
+
+        public MyImage Decoder_Image1(MyImage image)
         {
-            int n = 0;
-            for (int i = 0; i < 8; i++)
+            Pixel[,] image1 = new Pixel[image.hauteur, image.largeur];
+            Pixel[,] image2 = new Pixel[image.hauteur, image.largeur];
+            //première image
+            for (int i = 0; i < image.hauteur; i++)
             {
-                n = n * 10 + (b % 2);
-                b = (byte)(b / 2);
+                for (int j = 0; j < image.largeur; j++)
+                {
+                    Pixel p = image.image[i, j];
+                    int r = concatener(quatre_premiers_chiffres(p.R), 0000);
+                    int g = concatener(quatre_premiers_chiffres(p.G), 0000);
+                    int b = concatener(quatre_premiers_chiffres(p.B), 0000);
+                    image1[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
+                }
             }
-            return n;
+
+            //deuxième image
+            for (int i = 0; i < image.hauteur; i++)
+            {
+                for (int j = 0; j < image.largeur; j++)
+                {
+                    Pixel p = image.image[i, j];
+                    int r = concatener(quatre_derniers_chiffres(p.R), 0000);
+                    int g = concatener(quatre_derniers_chiffres(p.G), 0000);
+                    int b = concatener(quatre_derniers_chiffres(p.B), 0000);
+                    image2[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
+                }
+            }
+            return Enregistrer_Image_Decodee1(image1, image.largeur, image.hauteur, "images/Sortie.bmp");
         }
 
+        public MyImage Decoder_Image1(MyImage image)
+        {
+            Pixel[,] image2 = new Pixel[image.hauteur, image.largeur];
+            for (int i = 0; i < image.hauteur; i++)
+            {
+                for (int j = 0; j < image.largeur; j++)
+                {
+                    Pixel p = image.image[i, j];
+                    int r = concatener(quatre_derniers_chiffres(p.R), 0000);
+                    int g = concatener(quatre_derniers_chiffres(p.G), 0000);
+                    int b = concatener(quatre_derniers_chiffres(p.B), 0000);
+                    image2[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
+                }
+            }
+            return Enregistrer_Image_Decodee2(image2, image.largeur, image.hauteur, "images/Sortie.bmp");
+        }
+
+        public MyImage Enregistrer_Image_Decodee1(Pixel[,] image, int largeur, int hauteur, string chemin)
+        {
+            MyImage nvimage = new MyImage(chemin);
+            nvimage.image = image;
+            nvimage.largeur = largeur;
+            nvimage.hauteur = hauteur;
+            nvimage.From_Image_To_File("images/image_decodee1.bmp");
+            return nvimage;
+        }
+        public MyImage Enregistrer_Image_Decodee2(Pixel[,] image, int largeur, int hauteur, string chemin)
+        {
+            MyImage nvimage = new MyImage(chemin);
+            nvimage.image = image;
+            nvimage.largeur = largeur;
+            nvimage.hauteur = hauteur;
+            nvimage.From_Image_To_File("images/image_decodee2.bmp");
+            return nvimage;
+        }
         public int quatre_premiers_chiffres(int n)
         {
             return n >> 4;

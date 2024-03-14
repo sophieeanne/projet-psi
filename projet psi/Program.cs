@@ -4,6 +4,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 //image qu'on veut traiter
 MyImage image = new MyImage("images/lac.bmp");
+MyImage image2 = new MyImage("images/coco.bmp");
 
 //Test rotation
 //MyImage rota = image.Rotation(90, image);
@@ -18,6 +19,10 @@ MyImage image = new MyImage("images/lac.bmp");
 //image.AppliquerMatriceConvolution(sobelVertical).From_Image_To_File("images/Sortie.bmp");
 
 //Test coder 
+MyImage image_codee = image2.Coder_Image(image, image2);
+
+//Test decoder
+
 
 //Debug
 Console.WriteLine("y'a une sortie");
