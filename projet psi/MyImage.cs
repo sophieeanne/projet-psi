@@ -263,8 +263,8 @@ namespace projet_psi
                 for (int j = 0; j < img.largeur; j++)
                 {
                     //rotation par rapport au centre de la matrice : on mutliplie coordonnée par la matrice de rotation
-                    int x = (int)Math.Round(cosT * (j - ox) - sinT * (i - oy) + nv_larg/2.0);
-                    int y = (int)Math.Round(sinT * (j - ox) + cosT * (i - oy) + nv_haut/2.0);
+                    int x = (int)Math.Round(cosT * j - sinT * i);
+                    int y = (int)Math.Round(sinT * j + cosT * i);
                     
                     //on vérifie si c'est dans les dimensions de l'image
                     if (x >= 0 && y >= 0 && x < nv_larg && y < nv_haut)
