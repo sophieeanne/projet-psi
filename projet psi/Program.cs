@@ -22,7 +22,8 @@ MyImage image2 = new MyImage("images/coco.bmp");
 MyImage image_codee = image2.Coder_Image(image, image2);
 
 //Test decoder
-
+MyImage image_decodee1 = image_codee.Decoder_Image1(image_codee);
+MyImage image_decodee2 = image_codee.Decoder_Image2(image_codee);
 
 //Debug
 Console.WriteLine("y'a une sortie");

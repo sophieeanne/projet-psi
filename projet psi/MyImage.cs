@@ -360,16 +360,16 @@ namespace projet_psi
                 for (int j = 0; j < image.largeur; j++)
                 {
                     Pixel p = image.image[i, j];
-                    int r = concatener(quatre_derniers_chiffres(p.R), 0000);
-                    int g = concatener(quatre_derniers_chiffres(p.G), 0000);
-                    int b = concatener(quatre_derniers_chiffres(p.B), 0000);
+                    int r = concatener(quatre_premiers_chiffres(p.R), 0000);
+                    int g = concatener(quatre_premiers_chiffres(p.G), 0000);
+                    int b = concatener(quatre_premiers_chiffres(p.B), 0000);
                     image2[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
                 }
             }
             return Enregistrer_Image_Decodee1(image1, image.largeur, image.hauteur, "images/Sortie.bmp");
         }
 
-        public MyImage Decoder_Image1(MyImage image)
+        public MyImage Decoder_Image2(MyImage image)
         {
             Pixel[,] image2 = new Pixel[image.hauteur, image.largeur];
             for (int i = 0; i < image.hauteur; i++)
