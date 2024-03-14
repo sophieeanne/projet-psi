@@ -111,6 +111,20 @@ namespace projet_psi
             fs.Write(bytes, 0, bytes.Length);
         }
 
+        public int Convertir_Endian_To_Int(byte[] octets)
+        {
+            if (BitConverter.IsLittleEndian) //si le système est en little endian
+            {
+                int l = octets.Length;
+                for (int i = 0; i < l / 2; i++) //inverse les octets
+                {
+                    byte temp = octets[i];
+                    octets[i] = octets[l - i - 1];
+                    octets[l - i - 1] = temp;
+                }
+            }
+            return BitConverter.ToInt32(octets, 0);
+        }
 
         public byte[] Convertir_Int_To_Endian(int val)
         {
@@ -263,9 +277,8 @@ namespace projet_psi
                 for (int j = 0; j < img.largeur; j++)
                 {
                     //rotation par rapport au centre de la matrice : on mutliplie coordonnée par la matrice de rotation
-                    int x = (int)Math.Round(cosT * j - sinT * i);
-                    int y = (int)Math.Round(sinT * j + cosT * i);
-                    
+                    int x = (int)Math.Round(cosT * (j - ox) - sinT * (i - oy) + nv_larg / 2.0);
+                    int y = (int)Math.Round(sinT * (j - ox) + cosT * (i - oy) + nv_haut / 2.0);
                     //on vérifie si c'est dans les dimensions de l'image
                     if (x >= 0 && y >= 0 && x < nv_larg && y < nv_haut)
                     {
@@ -288,6 +301,68 @@ namespace projet_psi
             return nvimage;
         }
 
+        public MyImage Coder_Image(MyImage image1, MyImage image2)
+        {
+            int h = Math.Max(image1.hauteur, image2.hauteur);
+            int l = Math.Max(image1.largeur, image2.largeur);
+            Pixel[,] image = new Pixel[h, l];
+            for(int i=0; i<h; i++)
+            {
+                for(int j=0; j<l; j++)
+                {
+                    if (i < image1.hauteur && j < image1.largeur)
+                    {
+                        Pixel p1 = image1.image[i, j];
+                        Pixel p2 = image2.image[i, j];
+                        int r = concatener(quatre_premiers_chiffres(p1.R), quatre_derniers_chiffres(p2.R));
+                        int g = concatener(quatre_premiers_chiffres(p1.G), quatre_derniers_chiffres(p2.G));
+                        int b = concatener(quatre_premiers_chiffres(p1.B), quatre_derniers_chiffres(p2.B));
+                        image[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
+                    }
+                    else
+                    {
+                        image[i, j] = new Pixel(255, 255, 255);
+                    }
+                }
+            }
+            return Enregistrer_Image_Codee(image, l, h, "images/Sortie.bmp");
+        }
+        public MyImage Enregistrer_Image_Codee(Pixel[,] image, int largeur, int hauteur, string chemin)
+        {
+            MyImage nvimage = new MyImage(chemin);
+            nvimage.image = image;
+            nvimage.largeur = largeur;
+            nvimage.hauteur = hauteur;
+            nvimage.From_Image_To_File("images/image_codee.bmp");
+            return nvimage;
+        }
+        public int Convertir_byte_to_binaire(byte b)
+        {
+            int n = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                n = n * 10 + (b % 2);
+                b = (byte)(b / 2);
+            }
+            return n;
+        }
+
+        public int quatre_premiers_chiffres(int n)
+        {
+            return n >> 4;
+        }
+
+        public int quatre_derniers_chiffres(int n)
+        {
+            return n & 15;
+        }
+        public int concatener(int a, int b)
+        {
+            string stra = a.ToString();
+            string strb = b.ToString();
+            string str = stra + strb;
+            return int.Parse(str);
+        }
 
 
 

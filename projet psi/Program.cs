@@ -14,6 +14,6 @@ Console.WriteLine("Hello, World!");
 
 //MyImage rota = image.Rotation(90, image);
 //rota.From_Image_To_File("images/testrotation.bmp");
-MyImage image = new MyImage("images/lac.bmp");
+MyImage image = new MyImage("images/Test.bmp");
 MyImage rota = image.Rotation(90, image); // Utilisation d'une instance différente de MyImage pour l'image de sortie
 Console.WriteLine("y'a une sortie");
