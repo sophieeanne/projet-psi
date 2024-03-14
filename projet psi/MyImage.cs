@@ -20,7 +20,7 @@ namespace projet_psi
         public MyImage(string myfile)
         {
             byte[] file = File.ReadAllBytes(myfile);
-            if (file[0]=='B' && file[1]=='M')
+            if (file.Length >0 && file[0]=='B' && file[1]=='M')
             {
                 taille = BitConverter.ToInt32(file, 2);
 
@@ -227,23 +227,51 @@ namespace projet_psi
 
             return new MyImage(newImage, width, height);
         }
-
         public MyImage Rotation(int angle, MyImage img)
         {
-            Pixel[,] imrot = null;
-            double rad = angle * angle * Math.PI / 180.0;
+            if (img.image == null)
+            {
+                return null;
+            }
+
+            double rad = angle * Math.PI / 180.0;
             double cosT = Math.Cos(rad);
             double sinT = Math.Sin(rad);
-            double[,] matricerotation = new double[2, 2] { { cosT, -sinT }, { sinT, cosT } };
-            if (img.image != null)
+
+            int nv_larg = (int)Math.Ceiling(Math.Abs(img.largeur * cosT) + Math.Abs(img.hauteur * sinT));
+            int nv_haut = (int)Math.Ceiling(Math.Abs(img.largeur * sinT) + Math.Abs(img.hauteur * cosT));
+            double ox = img.largeur / 2.0;
+            double oy = img.hauteur / 2.0;
+            double nx = nv_larg / 2.0;
+            double ny = nv_haut / 2.0;
+            
+            Pixel[,] imrot = new Pixel[nv_haut, nv_larg];
+            
+
+            for (int i = 0; i < nv_haut; i++)
             {
-                int nv_larg =
-                int nv_long =
-
+                for (int j = 0; j < nv_larg; j++)
+                {
+                    imrot[i, j] = new Pixel(255, 255, 255);
+                }
             }
-            return null;
 
+            for (int i = 0; i < img.hauteur; i++)
+            {
+                for (int j = 0; j < img.largeur; j++)
+                {
+                    int x = (int)Math.Round(cosT * (j - ox) - sinT * (i - oy) + nx);
+                    int y = (int)Math.Round(sinT * (j - ox) + cosT * (i - oy) + ny);
 
+                    if (x >= 0 && y >= 0 && x < nv_larg && y < nv_haut)
+                    {
+                        imrot[y, x] = img.image[i, j]; 
+                    }
+                }
+            }
+            MyImage Image_rotation = new MyImage("images/Sortie.bmp");
+            Image_rotation.image = imrot;
+            return Image_rotation;
         }
 
 
