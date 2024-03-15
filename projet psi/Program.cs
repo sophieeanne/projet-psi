@@ -19,7 +19,7 @@ MyImage image2 = new MyImage("images/coco.bmp");
 //image.AppliquerMatriceConvolution(sobelVertical).From_Image_To_File("images/Sortie.bmp");
 
 //Test coder 
-MyImage image_codee = image2.Coder_Image(image, image2);
+MyImage image_codee = image2.Coder_Image(image2, image);
 
 //Test decoder
 MyImage image_decodee1 = image_codee.Decoder_Image1(image_codee);
