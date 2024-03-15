@@ -395,19 +395,6 @@ namespace projet_psi
                     image1[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
                 }
             }
-
-            //deuxième image
-            for (int i = 0; i < image.hauteur; i++)
-            {
-                for (int j = 0; j < image.largeur; j++)
-                {
-                    Pixel p = image.image[i, j];
-                    int r = concatener(quatre_premiers_chiffres(p.R), 0000);
-                    int g = concatener(quatre_premiers_chiffres(p.G), 0000);
-                    int b = concatener(quatre_premiers_chiffres(p.B), 0000);
-                    image2[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
-                }
-            }
             return Enregistrer_Image_Decodee1(image1, image.largeur, image.hauteur, "images/Sortie.bmp");
         }
 
