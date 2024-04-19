@@ -54,7 +54,12 @@ namespace projet_psi
         }
 
 
-        // Constructeur pour créer une instance MyImage à partir d'une matrice de pixels
+        /// <summary>
+        /// Constructeur pour créer une instance MyImage à partir d'une matrice de pixels
+        /// </summary>
+        /// <param name="image">matrice de pixel</param>
+        /// <param name="width">largeur</param>
+        /// <param name="height">hauteur</param>
         public MyImage(Pixel[,] image, int width, int height)
         {
             this.image = image;
@@ -62,6 +67,10 @@ namespace projet_psi
             this.hauteur = height;
 
         }
+        /// <summary>
+        /// enregistre l'image dans un fichier
+        /// </summary>
+        /// <param name="filePath">nom du fichier</param>
         public void From_Image_To_File(string filePath)
         {
             int paddingPerRow = (4 - (largeur * 3 % 4)) % 4;
@@ -104,13 +113,22 @@ namespace projet_psi
                 }
             }
         }
-
+        /// <summary>
+        /// écrit un entier 32 bits dans un fichier
+        /// </summary>
+        /// <param name="fs"></param>
+        /// <param name="value"></param>
         private void WriteInt32ToFileStream(FileStream fs, int value)
         {
             byte[] bytes = BitConverter.GetBytes(value);
             fs.Write(bytes, 0, bytes.Length);
         }
 
+        /// <summary>
+        /// convertit un nombre de endian à int
+        /// </summary>
+        /// <param name="octets">tableau d'octets</param>
+        /// <returns></returns>
         public int Convertir_Endian_To_Int(byte[] octets)
         {
             if (BitConverter.IsLittleEndian) //si le système est en little endian
@@ -126,6 +144,11 @@ namespace projet_psi
             return BitConverter.ToInt32(octets, 0);
         }
 
+        /// <summary>
+        /// convertit un entier en endian
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
         public byte[] Convertir_Int_To_Endian(int val)
         {
             byte[] octets = BitConverter.GetBytes(val); //convertit l'entier en tableau de bytes
@@ -142,8 +165,11 @@ namespace projet_psi
             return octets;
         }
 
-
-
+        /// <summary>
+        /// méthode pour agrandir une image
+        /// </summary>
+        /// <param name="factor">facteur par lequelle on veut agrandir l'image</param>
+        /// <returns></returns>
         public MyImage AgrandirImage(double factor)
         {
             // Calcul des nouvelles dimensions arrondies au plus proche entier
@@ -283,6 +309,12 @@ namespace projet_psi
 
             return new MyImage(newImage, width, height);
         }
+        /// <summary>
+        /// fait une rotation d'image à l'angle demandé
+        /// </summary>
+        /// <param name="angle"></param>
+        /// <param name="img"></param>
+        /// <returns></returns>
         public MyImage Rotation(int angle, MyImage img)
         {
             if (img.image == null)
@@ -295,14 +327,15 @@ namespace projet_psi
             double cosT = Math.Cos(rad);
             double sinT = Math.Sin(rad);
 
-            //calcule les nouvelles dimensions de l'image
+            //calcule les nouvelles dimensions de l'image (Math.Ceiling permet d'arrondir à l'entier supérieur)
             int nv_larg = (int)Math.Ceiling(Math.Abs(img.largeur * cosT) + Math.Abs(img.hauteur * sinT));
             int nv_haut = (int)Math.Ceiling(Math.Abs(img.largeur * sinT) + Math.Abs(img.hauteur * cosT));
             
+            //calcule du centre l'image
             double ox = img.largeur / 2.0;
             double oy = img.hauteur / 2.0;
 
-            
+            //initialisation de la matrice de pixels
             Pixel[,] imrot = new Pixel[nv_haut, nv_larg];
             
             //remplir la matrice en blanc (utile si l'angle n'est pas 90°)
@@ -328,21 +361,35 @@ namespace projet_psi
                     }
                 }
             }
-            return Enregistrer_Image_Rotation(imrot, nv_larg, nv_haut, "images/Sortie.bmp");
+            return Enregistrer_Image(imrot, nv_larg, nv_haut, "images/Sortie.bmp","image_avec_rotation");
            
         }
 
-        //retourne une nouvelle instance de myimage (l'image avec rotation) et l'enregistre dans le dossier image
-        public MyImage Enregistrer_Image_Rotation(Pixel[,] image, int largeur, int hauteur,string chemin)
+       /// <summary>
+       /// enregistre une image dans un fichier
+       /// </summary>
+       /// <param name="image"></param>
+       /// <param name="largeur"></param>
+       /// <param name="hauteur"></param>
+       /// <param name="chemin"></param>
+       /// <param name="nomfichier"></param>
+       /// <returns></returns>
+        public MyImage Enregistrer_Image(Pixel[,] image, int largeur, int hauteur,string chemin, string nomfichier)
         {
             MyImage nvimage = new MyImage(chemin);
             nvimage.image = image;
             nvimage.largeur = largeur;
             nvimage.hauteur = hauteur;
-            nvimage.From_Image_To_File("images/image_avec_rotation.bmp");
+            nvimage.From_Image_To_File("images/image_"+nomfichier+".bmp");
             return nvimage;
         }
 
+        /// <summary>
+        /// méthode pour coder une image
+        /// </summary>
+        /// <param name="image1"></param>
+        /// <param name="image2"></param>
+        /// <returns></returns>
         public MyImage Coder_Image(MyImage image1, MyImage image2)
         {
             int h = Math.Min(image1.hauteur, image2.hauteur);
@@ -367,18 +414,13 @@ namespace projet_psi
                     }
                 }
             }
-            return Enregistrer_Image_Codee(image, l, h, "images/Sortie.bmp");
+            return Enregistrer_Image(image, l, h, "images/Sortie.bmp", "image_codée");
         }
-        public MyImage Enregistrer_Image_Codee(Pixel[,] image, int largeur, int hauteur, string chemin)
-        {
-            MyImage nvimage = new MyImage(chemin);
-            nvimage.image = image;
-            nvimage.largeur = largeur;
-            nvimage.hauteur = hauteur;
-            nvimage.From_Image_To_File("images/image_codee.bmp");
-            return nvimage;
-        }
-
+        /// <summary>
+        /// méthode pour décoder une image
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
         public MyImage Decoder_Image1(MyImage image)
         {
             Pixel[,] image1 = new Pixel[image.hauteur, image.largeur];
@@ -395,9 +437,14 @@ namespace projet_psi
                     image1[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
                 }
             }
-            return Enregistrer_Image_Decodee1(image1, image.largeur, image.hauteur, "images/Sortie.bmp");
+            return Enregistrer_Image(image1, image.largeur, image.hauteur, "images/Sortie.bmp","image_décodée_1");
         }
-
+        
+        /// <summary>
+        /// méthode pour décoder une autre image
+        /// </summary>
+        /// <param name="image"></param>
+        /// <returns></returns>
         public MyImage Decoder_Image2(MyImage image)
         {
             Pixel[,] image2 = new Pixel[image.hauteur, image.largeur];
@@ -412,36 +459,64 @@ namespace projet_psi
                     image2[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
                 }
             }
-            return Enregistrer_Image_Decodee2(image2, image.largeur, image.hauteur, "images/Sortie.bmp");
+            return Enregistrer_Image(image2, image.largeur, image.hauteur, "images/Sortie.bmp","image_décodée_2");
         }
 
-        public MyImage Enregistrer_Image_Decodee1(Pixel[,] image, int largeur, int hauteur, string chemin)
+        /// <summary>
+        /// méthode pour convertir un nombre décimal en binaire
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public int Decimal_Vers_Binaire(int n)
         {
-            MyImage nvimage = new MyImage(chemin);
-            nvimage.image = image;
-            nvimage.largeur = largeur;
-            nvimage.hauteur = hauteur;
-            nvimage.From_Image_To_File("images/image_decodee1.bmp");
-            return nvimage;
+            int b = 0;
+            int i = 1;
+            int pos = 0;
+            while (n != 0)
+            {
+                b += (n % 2) * i;
+                n /= 2;
+                i *= 10;
+                pos++;
+            }
+            while (pos < 8)
+            {
+                b += (int)Math.Pow(10, pos); 
+                pos++;
+            }
+            return b;
         }
-        public MyImage Enregistrer_Image_Decodee2(Pixel[,] image, int largeur, int hauteur, string chemin)
-        {
-            MyImage nvimage = new MyImage(chemin);
-            nvimage.image = image;
-            nvimage.largeur = largeur;
-            nvimage.hauteur = hauteur;
-            nvimage.From_Image_To_File("images/image_decodee2.bmp");
-            return nvimage;
-        }
+        /// <summary>
+        /// méthode pour avoir les 4 premiers chiffres d'un nombre
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns> les 4 premiers chiffres d'un nombre</returns>
         public int quatre_premiers_chiffres(int n)
         {
-            return n >> 4;
+            n = Decimal_Vers_Binaire(n);
+            string a = n.ToString();
+            string b = a.Substring(0, 4);
+            return int.Parse(b);
+      
         }
-
+        /// <summary>
+        /// méthode pour avoir les 4 derniers chiffres d'un nombre
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns> les 4 derniers chiffres d'un nombre</returns>
         public int quatre_derniers_chiffres(int n)
         {
-            return n & 15;
+            n = Decimal_Vers_Binaire(n);
+            string a = n.ToString();
+            string b = a.Substring(a.Length-4);
+            return int.Parse(b);
         }
+        /// <summary>
+        /// méthode pour concaténer deux nombres
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns>le nombre concaténé</returns>
         public int concatener(int a, int b)
         {
             string stra = a.ToString();
