@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("projet psi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aeb5ec7146820861de3297aaa5098b9f44d2ab8a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+625d554cb313cfcd36f8a70af9af0d94c5fd4dae")]
 [assembly: System.Reflection.AssemblyProductAttribute("projet psi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("projet psi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

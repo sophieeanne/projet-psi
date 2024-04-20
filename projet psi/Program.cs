@@ -2,13 +2,13 @@
 using static System.Net.Mime.MediaTypeNames;
 
 //images qu'on veut traiter
-MyImage image = new MyImage("images/lac.bmp");
+MyImage image = new MyImage("images/Test.bmp");
 MyImage image2 = new MyImage("images/coco.bmp");
 
-//Test_Rotation(image);
-//Test_Codage(image, image2); 
+Test_Rotation(image);
+//Test_Codage(image2, image); 
 //Test_Decodage(image, image2);
-Test_Convolution(image);
+//Test_Convolution(image);
 
 //TestMandelbrot();
 
