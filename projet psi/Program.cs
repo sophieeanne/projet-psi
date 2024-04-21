@@ -9,9 +9,9 @@ MyImage image2 = new MyImage("images/coco.bmp");
 //Test_Codage(image2, image); 
 //Test_Decodage(image, image2);
 //Test_Convolution(image);
-TestMandelbrot();
+//TestMandelbrot();
 //TestJulia();
-
+TestRotationnel(image2);
 static void Test_Convolution(MyImage image)
 {
     double[,] sobelVertical = new double[,]
@@ -101,4 +101,13 @@ static void TestMandelbrot()
     MyImage mandelImg = new MyImage(blank, largeur, hauteur);
     mandelImg.mandelbrot(echelle, hauteur, largeur, seuil).From_Image_To_File("images/Mandel.bmp");
     Console.WriteLine("Regardez le fractale de Mandelbrot ");
+}
+static void TestRotationnel(MyImage image)
+{
+    // Calcule le rotationnel de l'image
+    MyImage imageRotationnel = image.CalculerRotationnel();
+    // Enregistre l'image du rotationnel dans un fichier
+    imageRotationnel.From_Image_To_File("images/Rotationnel.bmp");
+    // Indique à l'utilisateur où trouver l'image
+    Console.WriteLine("L'image rotationnelle a été enregistrée dans images/Rotationnel.bmp");
 }

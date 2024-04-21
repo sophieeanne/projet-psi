@@ -20,15 +20,15 @@ namespace projet_psi
             this.green = g;
             this.blue = b;
         }
-        public int R
+        public byte R
         {
             get { return red; }
         }
-        public int G
+        public byte G
         {
             get { return green; }
         }
-        public int B
+        public byte B
         {
             get { return blue; }
         }

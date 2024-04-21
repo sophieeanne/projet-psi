@@ -287,6 +287,47 @@ namespace projet_psi
         }
 
 
+        /// <summary>
+        /// Calcule le rotationnel de l'image et crée une nouvelle image avec le résultat
+        /// </summary>
+        public MyImage CalculerRotationnel()
+        {
+            Pixel[,] resultat = new Pixel[hauteur, largeur];
+
+            //boucle dans l'image en evitant les bords
+            for (int j = 1; j < hauteur - 1; j++)
+            {
+                for (int i = 1; i < largeur - 1; i++)
+                {
+                    // Equivalent des derivees partielles
+                    int dBdx = image[j, i + 1].B - image[j, i].B;
+                    int dBdy = image[j + 1, i].B - image[j, i].B;
+                    int dGdx = image[j, i + 1].G - image[j, i].G;
+                    int dRdy = image[j + 1, i].R - image[j, i].R;
+
+                    // Calcule le rotationnel
+                    byte composanteX = (byte)Math.Max(0, Math.Min(255, 128 + dBdy)); // Pour eviter les valeurs negatives ou superieures a 255
+                    byte composanteY = (byte)Math.Max(0, Math.Min(255, 128 - dBdx)); 
+                    byte composanteZ = (byte)Math.Max(0, Math.Min(255, 128 + dGdx - dRdy)); // Z est un melange des deux autres
+
+                    resultat[j, i] = new Pixel(composanteX, composanteY, composanteZ);
+                }
+            }
+
+            //Bords  en noir
+            for (int i = 0; i < largeur; i++)
+            {
+                resultat[0, i] = new Pixel(0, 0, 0); 
+                resultat[hauteur - 1, i] = new Pixel(0, 0, 0); 
+            }
+            for (int j = 0; j < hauteur; j++)
+            {
+                resultat[j, 0] = new Pixel(0, 0, 0); 
+                resultat[j, largeur - 1] = new Pixel(0, 0, 0); 
+            }
+
+            return new MyImage(resultat, largeur, hauteur);
+        }
         public MyImage AppliquerMatriceConvolution(double[,] matriceConvolution)
         {
             // matriceConvolution est une matrice 3x3
@@ -403,6 +444,7 @@ namespace projet_psi
             return Enregistrer_Image(imrot, nv_larg, nv_haut, "images/Sortie.bmp","image_avec_rotation");
            
         }
+
 
        /// <summary>
        /// enregistre une image dans un fichier
