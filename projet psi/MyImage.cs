@@ -202,9 +202,9 @@ namespace projet_psi
 
 
 
-        // pour mandelbrot: fonction récursive qui fait z^2+c
+        // pour Julia: fonction récursive qui fait z^2+c
         //pour l'instant complexe = tableau de double, si le temps je ferai une classe
-        private int MandelRecursif(double[] z,double[] c, int n)
+        private int JulRecursif(double[] z,double[] c, int n)
         {
             if ((Math.Sqrt(z[0] * z[0] + z[1] * z[1])>2 ) || n>16)
             {
@@ -216,13 +216,13 @@ namespace projet_psi
             double d = a*a-b*b;
             double e = -2 * a * b;
             double[] r = { d + c[0], e + c[1] }; //^2+c
-            return MandelRecursif(r,c,n+1);
+            return JulRecursif(r,c,n+1);
 
         }
         
-        public MyImage Mandelbrot(double echelle, double[] c, int hauteur, int largeur, double contraste )
+        public MyImage Julia(double echelle, double[] c, int hauteur, int largeur, double contraste, int seuil)
         {
-            Pixel[,] mandel = new Pixel[hauteur, largeur];
+            Pixel[,] Jul = new Pixel[hauteur, largeur];
             for(int i = 0; i < largeur; i++)
             {
                 for(int j = 0; j<hauteur; j++)
@@ -233,18 +233,18 @@ namespace projet_psi
                     double imaginaire = echelle * (j - hauteur / 2);
                     //Console.WriteLine(reel +""+ imaginaire);
                     double[] z = { reel, imaginaire  };
-                    int iter = (MandelRecursif(z, c, 0));
+                    int iter = (JulRecursif(z, c, 0));
                     Console.WriteLine(iter);
-                    double intensite1 = (double)255 / Math.Pow((iter+1),contraste);
-                    double intensite2 = (double)255 / Math.Pow((iter+2), contraste);
-                    double intensite3 = (double)255 / Math.Pow(iter, contraste); //du bricolage pour avoir des couleurs
+                    //double intensite1 = (double)255 / Math.Pow((iter+1),contraste);
+                    //double intensite2 = (double)255 / Math.Pow((iter+2), contraste);
+                    //double intensite3 = (double)255 / Math.Pow(iter, contraste); //du bricolage pour avoir des couleurs
+                    byte lum = (byte)(255 * (Convert.ToInt32(iter > seuil)));
 
-
-                    mandel[j, i] = new Pixel((byte)(1-intensite1), (byte)(1-intensite2), (byte)(1-intensite3)); 
+                    Jul[j, i] = new Pixel(    lum, lum, lum); 
 
                 }
             }
-            return new MyImage(mandel, largeur, hauteur);
+            return new MyImage(Jul, largeur, hauteur);
         }
 
 

@@ -5,12 +5,12 @@ using static System.Net.Mime.MediaTypeNames;
 MyImage image = new MyImage("images/Test.bmp");
 MyImage image2 = new MyImage("images/coco.bmp");
 
-Test_Rotation(image);
+//Test_Rotation(image);
 //Test_Codage(image2, image); 
 //Test_Decodage(image, image2);
 //Test_Convolution(image);
 
-//TestMandelbrot();
+TestJulia();
 
 static void Test_Convolution(MyImage image)
 {
@@ -46,7 +46,7 @@ static void Test_Decodage(MyImage image, MyImage imagebis)
     Console.WriteLine("regardez les images décodées");
 }
 
-static void TestMandelbrot()
+static void TestJulia()
 {
     Console.WriteLine("entrez Re(c)");
     double a = Convert.ToDouble(Console.ReadLine());
@@ -58,22 +58,20 @@ static void TestMandelbrot()
 
     Console.WriteLine("entrez la largeur");
     int largeur = Convert.ToInt32(Console.ReadLine());
-
+    
     Console.WriteLine("entrez la hauteur");
     int hauteur = Convert.ToInt32(Console.ReadLine());
-
+    Console.WriteLine("entrez le seuil");
+    int seuil = Convert.ToInt32(Console.ReadLine());
     //Console.WriteLine("entrez le contraste");
     double contraste = 0.2; //Convert.ToDouble(Console.ReadLine());
-
-    //Console.WriteLine("entrez l'échelle");
-    //double echelle = Convert.ToDouble(Console.ReadLine());
 
     double echelle = (double)2 / largeur;
 
     Console.WriteLine(echelle);
     Pixel[,] blank = new Pixel[largeur,hauteur];
 
-    MyImage mandel = new MyImage(blank, largeur, hauteur);
-    mandel.Mandelbrot(echelle, c, hauteur, largeur, contraste).From_Image_To_File("images/Mandel.bmp");
-    Console.WriteLine("rergarder le farctale de mandlebort");
+    MyImage Jul = new MyImage(blank, largeur, hauteur);
+    Jul.Julia(echelle, c, hauteur, largeur, contraste, seuil).From_Image_To_File("images/Jul.bmp");
+    Console.WriteLine("Regardez le fractale de Julia ");
 }
