@@ -202,49 +202,88 @@ namespace projet_psi
 
 
 
-        // pour Julia: fonction récursive qui fait z^2+c
-        //pour l'instant complexe = tableau de double, si le temps je ferai une classe
-        private int JulRecursif(double[] z,double[] c, int n)
+        /// <summary>
+        /// Calcule récursivement le nombre d'itérations de Julia pour un point donné avec la formule z carré + c avec les fonctions d'instance complexe
+        /// </summary>
+        private int JulRecursif(Complex z, Complex c, int n)
         {
-            if ((Math.Sqrt(z[0] * z[0] + z[1] * z[1])>2 ) || n>16)
+            if (z.ModuleCarré() > 4 || n > 32)
             {
-                return (n);
+                return n;
             }
-            double a = z[0];
-            double b = z[1];
-
-            double d = a*a-b*b;
-            double e = -2 * a * b;
-            double[] r = { d + c[0], e + c[1] }; //^2+c
-            return JulRecursif(r,c,n+1);
-
+            return JulRecursif(z.CarréPlus(c), c, n + 1);
         }
-        
-        public MyImage Julia(double echelle, double[] c, int hauteur, int largeur, double contraste, int seuil)
+
+
+        /// <summary>
+        /// Génère une image des fractales julia
+        /// </summary>
+        public MyImage Julia(double echelle, Complex c, int hauteur, int largeur, int seuil)
         {
             Pixel[,] Jul = new Pixel[hauteur, largeur];
-            for(int i = 0; i < largeur; i++)
+            double offsetX = largeur / 2.0;
+            double offsetY = hauteur / 2.0;
+
+            for (int i = 0; i < largeur; i++)
             {
-                for(int j = 0; j<hauteur; j++)
+                for (int j = 0; j < hauteur; j++)
                 {
-                    double coeffcouleur = (double)5;
-                    //on crée le nombre complexe associé a chaque pixel
-                    double reel = echelle * (i - largeur / 2);
-                    double imaginaire = echelle * (j - hauteur / 2);
-                    //Console.WriteLine(reel +""+ imaginaire);
-                    double[] z = { reel, imaginaire  };
-                    int iter = (JulRecursif(z, c, 0));
-                    Console.WriteLine(iter);
-                    //double intensite1 = (double)255 / Math.Pow((iter+1),contraste);
-                    //double intensite2 = (double)255 / Math.Pow((iter+2), contraste);
-                    //double intensite3 = (double)255 / Math.Pow(iter, contraste); //du bricolage pour avoir des couleurs
+                    double reel = echelle * (i - offsetX);
+                    double imaginaire = echelle * (j - offsetY);
+                    Complex z = new Complex(reel, imaginaire);  //nombre complexe associé a chaque pixel
+                    int iter = JulRecursif(z, c, 0);  //iterations de quand ca diverge ou atteint le max 
                     byte lum = (byte)(255 * (Convert.ToInt32(iter > seuil)));
-
-                    Jul[j, i] = new Pixel(    lum, lum, lum); 
-
+                    Jul[j, i] = new Pixel(lum, lum, lum);
                 }
             }
             return new MyImage(Jul, largeur, hauteur);
+        }
+        /// <summary>
+        /// Calcule le nombre d'itérations nécessaires pour la divergence de c
+        /// </summary>
+        /// <param name="c">Le point complexe à tester.</param>
+        /// <param name="maxIter">Nombre maximal d'itérations.</param>
+        /// <returns>Le nombre d'itérations réalisées avant que la suite ne dépasse 2 en module.</returns>
+        private int mandel(Complex c, int maxIter)
+        {
+            Complex z = new Complex(0, 0);
+            int n = 0;
+            // boucle pour voir si ça diverge
+            while (z.ModuleCarré() <= 4 && n < maxIter)
+            {
+                z = z.CarréPlus(c); // z devient z^2 + c
+                n++;
+            }
+            return n; // retourne le nb d'itérations
+        }
+
+        /// <summary>
+        /// Génère une image de Mandelbrot
+        /// </summary>
+        /// <param name="echelle">Facteur d'échelle pour le zoom </param>
+        /// <param name="hauteur">Hauteur de l'image en pixels.</param>
+        /// <param name="largeur">Largeur </param>
+        /// <param name="maxIter">Nombre maximal d itérations pour chaque point.</param>
+        /// <returns>Une image de lensemble de Mandelbrot</returns>
+        public MyImage mandelbrot(double echelle, int hauteur, int largeur, int maxIter)
+        {
+            Pixel[,] image = new Pixel[hauteur, largeur];
+            double offsetX = largeur / 2.0;
+            double offsetY = hauteur / 2.0;
+
+            for (int i = 0; i < largeur; i++)
+            {
+                for (int j = 0; j < hauteur; j++)
+                {
+                    double reel = (i - offsetX) * echelle;
+                    double imaginaire = (j - offsetY) * echelle;
+                    Complex c = new Complex(reel, imaginaire);
+                    int iter = mandel(c, maxIter);
+                    byte lum = (byte)(255 * iter / maxIter);//pour avoir la nuance de gris selon le nombre d'iterations ppour diverger
+                    image[j, i] = new Pixel(lum, lum, lum); // on met la couleur
+                }
+            }
+            return new MyImage(image, largeur, hauteur);
         }
 
 

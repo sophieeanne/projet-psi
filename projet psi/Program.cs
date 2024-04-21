@@ -9,8 +9,8 @@ MyImage image2 = new MyImage("images/coco.bmp");
 //Test_Codage(image2, image); 
 //Test_Decodage(image, image2);
 //Test_Convolution(image);
-
-TestJulia();
+TestMandelbrot();
+//TestJulia();
 
 static void Test_Convolution(MyImage image)
 {
@@ -48,30 +48,57 @@ static void Test_Decodage(MyImage image, MyImage imagebis)
 
 static void TestJulia()
 {
-    Console.WriteLine("entrez Re(c)");
-    double a = Convert.ToDouble(Console.ReadLine());
+    //Console.WriteLine("entrez Re(c)");
+    //double a = Convert.ToDouble(Console.ReadLine());
+    double a = (0-0.70176);
+    //Console.WriteLine("entrez Im(c)");
+    //double b = Convert.ToDouble(Console.ReadLine());
+    double b = 0 - 0.3842;
+    Complex c = new Complex(a,b);
 
-    Console.WriteLine("entrez Im(c)");
-    double b = Convert.ToDouble(Console.ReadLine());
-
-    double[] c = {a,b};
-
-    Console.WriteLine("entrez la largeur");
-    int largeur = Convert.ToInt32(Console.ReadLine());
+    //Console.WriteLine("entrez la largeur");
+    //int largeur = Convert.ToInt32(Console.ReadLine());
+    int largeur = 2000;
+    //Console.WriteLine("entrez la hauteur");
+    //int hauteur = Convert.ToInt32(Console.ReadLine());
+    int hauteur = largeur;
+    //Console.WriteLine("entrez le seuil");
+    int seuil = 16;
+    //int seuil = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine("entrez l'echelle par exemple 0.05");
     
-    Console.WriteLine("entrez la hauteur");
-    int hauteur = Convert.ToInt32(Console.ReadLine());
-    Console.WriteLine("entrez le seuil");
-    int seuil = Convert.ToInt32(Console.ReadLine());
-    //Console.WriteLine("entrez le contraste");
-    double contraste = 0.2; //Convert.ToDouble(Console.ReadLine());
+    double echelle = Convert.ToDouble(Console.ReadLine());
 
-    double echelle = (double)2 / largeur;
 
     Console.WriteLine(echelle);
     Pixel[,] blank = new Pixel[largeur,hauteur];
 
     MyImage Jul = new MyImage(blank, largeur, hauteur);
-    Jul.Julia(echelle, c, hauteur, largeur, contraste, seuil).From_Image_To_File("images/Jul.bmp");
+    Jul.Julia(echelle, c, hauteur, largeur, seuil).From_Image_To_File("images/Jul.bmp");
     Console.WriteLine("Regardez le fractale de Julia ");
+}
+static void TestMandelbrot()
+{
+    //Console.WriteLine("entrez Re(c)");
+    double a = (0 - 0.70176);
+    //Console.WriteLine("entrez Im(c)");
+    double b = 0 - 0.3842;
+    Complex c = new Complex(a, b);
+
+    //Console.WriteLine("entrez la largeur");
+    int largeur = 2000;
+    //Console.WriteLine("entrez la hauteur");
+    int hauteur = largeur;
+    //Console.WriteLine("entrez le seuil");
+    //int seuil = Convert.ToInt32(Console.ReadLine());
+    int seuil = 16;
+    Console.WriteLine("entrez l'echelle par exempl 0.001");
+    double echelle = Convert.ToDouble(Console.ReadLine());
+
+    Console.WriteLine(echelle);
+    Pixel[,] blank = new Pixel[largeur, hauteur];
+
+    MyImage mandelImg = new MyImage(blank, largeur, hauteur);
+    mandelImg.mandelbrot(echelle, hauteur, largeur, seuil).From_Image_To_File("images/Mandel.bmp");
+    Console.WriteLine("Regardez le fractale de Mandelbrot ");
 }
