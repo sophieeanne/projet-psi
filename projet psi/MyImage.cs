@@ -550,6 +550,8 @@ namespace projet_psi
             string b = a.Substring(a.Length-4);
             return int.Parse(b);
         }
+
+
         /// <summary>
         /// méthode pour concaténer deux nombres
         /// </summary>
@@ -563,8 +565,87 @@ namespace projet_psi
             string str = stra + strb;
             return int.Parse(str);
         }
+        /// <summary>
+        /// méthode pour convertir une image en niveaux de gris
+        /// </summary>
+        public void Convertir_YCbCR()
+        {
+            Pixel[,] pixels = new Pixel[hauteur, largeur];
+            for (int i = 0; i < hauteur; i++)
+            {
+                for (int j = 0; j < largeur; j++)
+                {
+                    Pixel p = image[i, j];
+                    int Y = (int)(0.299 * p.R + 0.587 * p.G + 0.114 * p.B);
+                    int Cb = (int)(-0.1687 * p.R - 0.3313 * p.G + 0.5 * p.B + 128);
+                    int Cr = (int)(0.5 * p.R - 0.4187 * p.G - 0.0813 * p.B + 128);
+                    pixels[i, j] = new Pixel((byte)Y, (byte)Cr, (byte)Cb);
 
+                }
+            }
+            Enregistrer_Image(pixels, largeur, hauteur, "images/Sortie.bmp", "YCbCr");
+        }
 
+        public void sous_echantillonage_422(MyImage im)
+        {
+            im.Convertir_YCbCR();
+            Pixel[,] pixels = new Pixel[hauteur, largeur];
+            for (int i = 0; i < hauteur; i++)
+            {
+                for (int j = 0; j < largeur; j++)
+                {
+                    Pixel p = im.image[i, j];
+                    int Y = p.R;
+                        if (j % 2 == 0)
+                        {
+                            pixels[i, j] = im.image[i, j];
+                        }
+                        else
+                        {
+                            Pixel p1 = im.image[i, j - 1];
+                            pixels[i, j] = new Pixel((byte)Y, (byte)p1.G, (byte)p1.B);
+                        }
+                }
+            }   
+            Enregistrer_Image(pixels, largeur, hauteur, "images/Sortie.bmp", "sous_echantillonage_422");
+        }
+
+        public void sous_echantillonage_420(MyImage im)
+        {
+            im.Convertir_YCbCR();
+            Pixel[,] pixels = new Pixel[hauteur, largeur];
+            for (int i = 0; i < hauteur; i++)
+            {
+                for (int j = 0; j < largeur; j++)
+                {
+                    Pixel p = im.image[i, j];
+                    int Y = p.R;
+                    if (i%2 ==0 && j%2 == 0)
+                    {
+                        pixels[i, j] = im.image[i, j];
+                    }
+                    else if (i%2 != 0 && j%2 == 0)
+                    {
+                        Pixel p1 = im.image[i - 1, j];
+                        pixels[i, j] = new Pixel((byte)Y, (byte)p1.G, (byte)p1.B);
+                        
+                    }
+                    else if (i % 2 == 0 && j % 2 != 0)
+                    {
+                        Pixel p1 = im.image[i, j - 1];
+                        pixels[i, j] = new Pixel((byte)Y, (byte)p1.G, (byte)p1.B);
+                       
+                    }
+                    else
+                    {
+                        Pixel p1 = im.image[i - 1, j];
+                        Pixel p2 = im.image[i, j - 1];
+                        pixels[i, j] = new Pixel((byte)Y, (byte)((p1.G + p2.G) / 2), (byte)((p1.B + p2.B) / 2));     
+                    }   
+                }
+            }
+            Enregistrer_Image(pixels, largeur, hauteur, "images/Sortie.bmp", "sous_echantillonage_420");
+        }
 
 
 
