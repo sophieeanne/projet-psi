@@ -2,7 +2,7 @@
 using static System.Net.Mime.MediaTypeNames;
 
 //images qu'on veut traiter
-MyImage image = new MyImage("images/Test.bmp");
+MyImage image = new MyImage("images/lac.bmp");
 MyImage image2 = new MyImage("images/coco.bmp");
 
 //Test_Rotation(image);
@@ -11,6 +11,9 @@ MyImage image2 = new MyImage("images/coco.bmp");
 //Test_Convolution(image);
 //TestMandelbrot();
 //TestJulia();
+image2.sous_echantillonage_420(image2);
+Console.WriteLine("sortie");
+
 TestRotationnel(image2);
 static void Test_Convolution(MyImage image)
 {
