@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\itoda\\.nuget\\packages\\": {}
+    "C:\\Users\\gabri\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\itoda\\source\\repos\\projet-psi\\projet psi\\projet psi.csproj",
+      "projectUniqueName": "C:\\Users\\gabri\\OneDrive\\ESILV\\Pb Scientifique Informatique\\PSI\\projet psi\\projet psi.csproj",
       "projectName": "projet psi",
-      "projectPath": "C:\\Users\\itoda\\source\\repos\\projet-psi\\projet psi\\projet psi.csproj",
-      "packagesPath": "C:\\Users\\itoda\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\itoda\\source\\repos\\projet-psi\\projet psi\\obj\\",
+      "projectPath": "C:\\Users\\gabri\\OneDrive\\ESILV\\Pb Scientifique Informatique\\PSI\\projet psi\\projet psi.csproj",
+      "packagesPath": "C:\\Users\\gabri\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\gabri\\OneDrive\\ESILV\\Pb Scientifique Informatique\\PSI\\projet psi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\itoda\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\gabri\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

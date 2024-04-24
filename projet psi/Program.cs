@@ -11,10 +11,11 @@ MyImage image2 = new MyImage("images/coco.bmp");
 //Test_Convolution(image);
 //TestMandelbrot();
 //TestJulia();
+//TestRotationnel(image2);
 image2.sous_echantillonage_420(image2);
 Console.WriteLine("sortie");
 
-TestRotationnel(image2);
+
 static void Test_Convolution(MyImage image)
 {
     double[,] sobelVertical = new double[,]
