@@ -8,8 +8,8 @@ MyImage image2 = new MyImage("images/coco.bmp");
 Test_Rotation(image2);
 //Test_Codage(image2, image); 
 //Test_Decodage(image, image2);
-//Test_Convolution(image);
-//TestMandelbrot();
+//Test_Convolution(image2);
+TestMandelbrot();
 //TestJulia();
 //TestRotationnel(image2);
 //image2.sous_echantillonage_420(image2);
@@ -29,7 +29,13 @@ static void Test_Convolution(MyImage image)
         { -2, 0, 2 },
         { -1, 0, 1 }
     };
-    image.AppliquerMatriceConvolution(sobelVertical).From_Image_To_File("images/Sortie.bmp");
+    double[,] MatriceFlou = new double[,]
+    {
+        { 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0 },
+        { 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0 },
+        { 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0 }
+    };
+    image.AppliquerMatriceConvolution(MatriceFlou).From_Image_To_File("images/Sortie.bmp");
     Console.WriteLine("regardez l'image convoluée");
 }       
 static void Test_Rotation(MyImage image)
@@ -95,7 +101,7 @@ static void TestMandelbrot()
     Complex c = new Complex(a, b);
 
     //Console.WriteLine("entrez la largeur");
-    int largeur = 2000;
+    int largeur = 500;
     //Console.WriteLine("entrez la hauteur");
     int hauteur = largeur;
     //Console.WriteLine("entrez le seuil");
@@ -119,4 +125,14 @@ static void TestRotationnel(MyImage image)
     imageRotationnel.From_Image_To_File("images/Rotationnel.bmp");
     // Indique à l'utilisateur où trouver l'image
     Console.WriteLine("L'image rotationnelle a été enregistrée dans images/Rotationnel.bmp");
+}
+
+static void TestAgrandirImage(MyImage image, double facteur)
+{
+    // Agrandit l'image
+    MyImage imageAgrandie = image.AgrandirImage(facteur);
+    // Enregistre l'image agrandie dans un fichier
+    imageAgrandie.From_Image_To_File("images/Agrandie.bmp");
+    // Indique à l'utilisateur où trouver l'image
+    Console.WriteLine("L'image agrandie a été enregistrée dans images/Agrandie.bmp");
 }
