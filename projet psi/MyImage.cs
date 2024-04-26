@@ -434,13 +434,13 @@ namespace projet_psi
             Pixel[,] imrot = new Pixel[nv_haut, nv_larg];
             
             //remplir la matrice en blanc (utile si l'angle n'est pas 90°)
-            for (int i = 0; i < nv_haut; i++)
-            {
-                for (int j = 0; j < nv_larg; j++)
-                {
-                    imrot[i, j] = new Pixel(255, 255, 255);
-                }
-            }
+            //for (int i = 0; i < nv_haut; i++)
+            //{
+            //    for (int j = 0; j < nv_larg; j++)
+            //    {
+            //        imrot[i, j] = new Pixel(255, 255, 255);
+            //    }
+            //}
 
             for (int i = 0; i < img.hauteur; i++)
             {
