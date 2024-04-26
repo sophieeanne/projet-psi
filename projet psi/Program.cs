@@ -5,17 +5,22 @@ using static System.Net.Mime.MediaTypeNames;
 MyImage image = new MyImage("images/lac.bmp");
 MyImage image2 = new MyImage("images/coco.bmp");
 
-//Test_Rotation(image);
+//Test_Rotation(image2);
 //Test_Codage(image2, image); 
 //Test_Decodage(image, image2);
 //Test_Convolution(image);
 //TestMandelbrot();
 //TestJulia();
 //TestRotationnel(image2);
-image2.sous_echantillonage_420(image2);
+//image2.sous_echantillonage_420(image2);
+Test_Grayscale(image2);
 Console.WriteLine("sortie");
 
-
+static void Test_Grayscale(MyImage image_originale)
+{
+    MyImage image = image_originale.Grayscale();
+    image.From_Image_To_File("images/Sortie.bmp");
+}
 static void Test_Convolution(MyImage image)
 {
     double[,] sobelVertical = new double[,]

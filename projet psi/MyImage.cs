@@ -165,6 +165,21 @@ namespace projet_psi
             return octets;
         }
 
+        public MyImage Grayscale()
+        {
+            for (int i = 0; i < hauteur; i++)
+            {
+                for (int j = 0; j < largeur; j++)
+                {
+                    Pixel p = image[i, j];
+                    int n = ((int)p.R + (int)p.B + (int)p.G) / 3;
+                    image[i, j] = new Pixel((byte)n, (byte)n, (byte)n);
+                }
+            }
+            MyImage im = new MyImage(image, largeur,hauteur);
+            return im; 
+
+        }
         /// <summary>
         /// méthode pour agrandir une image
         /// </summary>
