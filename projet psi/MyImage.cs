@@ -627,7 +627,7 @@ namespace projet_psi
             }
             Enregistrer_Image(pixels, largeur, hauteur, "images/Sortie.bmp", "YCbCr");
         }
-
+        
         public void sous_echantillonage_422(MyImage im)
         {
             im.Convertir_YCbCR();
