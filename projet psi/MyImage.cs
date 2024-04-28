@@ -423,24 +423,24 @@ namespace projet_psi
             double sinT = Math.Sin(rad);
 
             //calcule les nouvelles dimensions de l'image (Math.Ceiling permet d'arrondir à l'entier supérieur)
-            int nv_larg = (int)Math.Ceiling(Math.Abs(img.largeur * cosT) + Math.Abs(img.hauteur * sinT));
-            int nv_haut = (int)Math.Ceiling(Math.Abs(img.largeur * sinT) + Math.Abs(img.hauteur * cosT));
+            int nv_larg = (int)Math.Round(Math.Abs(img.largeur * cosT) + Math.Abs(img.hauteur * sinT));
+            int nv_haut = (int)Math.Round(Math.Abs(img.largeur * sinT) + Math.Abs(img.hauteur * cosT));
             
             //calcule du centre l'image
-            double ox = img.largeur / 2.0;
-            double oy = img.hauteur / 2.0;
+            int ox = img.largeur / 2;
+            int oy = img.hauteur / 2;
 
             //initialisation de la matrice de pixels
             Pixel[,] imrot = new Pixel[nv_haut, nv_larg];
-            
-            //remplir la matrice en blanc (utile si l'angle n'est pas 90°)
-            //for (int i = 0; i < nv_haut; i++)
-            //{
-            //    for (int j = 0; j < nv_larg; j++)
-            //    {
-            //        imrot[i, j] = new Pixel(255, 255, 255);
-            //    }
-            //}
+
+            //remplir la matrice en blanc(utile si l'angle n'est pas 90°)
+            for (int i = 0; i < nv_haut; i++)
+            {
+                for (int j = 0; j < nv_larg; j++)
+                {
+                    imrot[i, j] = new Pixel(255, 255, 255);
+                }
+            }
 
             for (int i = 0; i < img.hauteur; i++)
             {
@@ -456,7 +456,7 @@ namespace projet_psi
                     }
                 }
             }
-            return Enregistrer_Image(imrot, nv_larg, nv_haut, "images/Sortie.bmp","image_avec_rotation");
+            return Enregistrer_Image(imrot, nv_larg, nv_haut, "images/Sortie.bmp","image avec rotation");
            
         }
 
