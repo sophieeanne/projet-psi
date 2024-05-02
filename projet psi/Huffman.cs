@@ -9,7 +9,9 @@ namespace projet_psi
     internal class Huffman
     {
         public Noeud root;
-        public Dictionary<Pixel, string> dico;
+        public Dictionary<Pixel, string> fréquences;
+
+
 
     }
 }
