@@ -423,54 +423,52 @@ namespace projet_psi
         /// <returns></returns>
         public MyImage Rotation(int angle, MyImage img)
         {
-            if (img.image == null)
+            if(img.image == null)
             {
                 return null;
             }
-
             //transformer les angles en radian
-            double rad = angle * Math.PI / 180.0;
+            double rad = angle * Math.PI / 180;
             double cosT = Math.Cos(rad);
             double sinT = Math.Sin(rad);
 
-            //calcule les nouvelles dimensions de l'image (Math.Ceiling permet d'arrondir à l'entier supérieur)
-            int nv_larg = (int)Math.Round(Math.Abs(img.largeur * cosT) + Math.Abs(img.hauteur * sinT));
-            int nv_haut = (int)Math.Round(Math.Abs(img.largeur * sinT) + Math.Abs(img.hauteur * cosT));
-            
-            //calcule du centre l'image
-            int ox = img.largeur / 2;
-            int oy = img.hauteur / 2;
+            //calcule les nouvelles dimensions de l'image 
+            int nv_larg = (int)(Math.Abs(img.largeur * cosT) + Math.Abs(img.hauteur * sinT));
+            int nv_haut= (int)(Math.Abs(img.largeur * sinT) + Math.Abs(img.hauteur * cosT));
 
             //initialisation de la matrice de pixels
             Pixel[,] imrot = new Pixel[nv_haut, nv_larg];
 
-            //remplir la matrice en blanc(utile si l'angle n'est pas 90°)
+            //on calcule le centre de l'image originelle
+            int x0 = img.largeur / 2;
+            int y0 = img.hauteur / 2;
+
+            //on calcule le centre de l'image avec rotation
+            int x1 = nv_larg / 2;
+            int y1 = nv_haut / 2;
+
             for (int i = 0; i < nv_haut; i++)
             {
                 for (int j = 0; j < nv_larg; j++)
                 {
-                    imrot[i, j] = new Pixel(255, 255, 255);
-                }
-            }
+                    //on mutliplie par la matrice de rotation, on fait une rotation autour du centre de l'image
+                    int x = (int)((j - x1) * cosT + (i - y1) * sinT + x0);
+                    int y = (int)((i - y1) * cosT - (j - x1) * sinT + y0);
 
-            for (int i = 0; i < img.hauteur; i++)
-            {
-                for (int j = 0; j < img.largeur; j++)
-                {
-                    //rotation par rapport au centre de la matrice : on mutliplie coordonnée par la matrice de rotation
-                    int x = (int)Math.Round(cosT * (j - ox) - sinT * (i - oy) + nv_larg / 2.0);
-                    int y = (int)Math.Round(sinT * (j - ox) + cosT * (i - oy) + nv_haut / 2.0);
-                    //on vérifie si c'est dans les dimensions de l'image
-                    if (x >= 0 && y >= 0 && x < nv_larg && y < nv_haut)
+                    if (x >= 0 && x < img.largeur && y >= 0 && y < img.hauteur)
                     {
-                        imrot[y, x] = img.image[i, j]; 
+                        imrot[i, j] = img.image[y, x];
+                    }
+                    else
+                    {
+                        imrot[i, j] = new Pixel(255, 255, 255);
                     }
                 }
             }
-            return Enregistrer_Image(imrot, nv_larg, nv_haut, "images/Sortie.bmp","image avec rotation");
-           
-        }
+            return Enregistrer_Image(imrot, nv_larg, nv_haut, "images/Sortie.bmp", "image avec rotation");
 
+
+        }
 
        /// <summary>
        /// enregistre une image dans un fichier
@@ -715,16 +713,117 @@ namespace projet_psi
             Enregistrer_Image(pixels, largeur, hauteur, "images/Sortie.bmp", "sous_echantillonage_420");
         }
 
+        public List<Pixel[,]> division_matrices_8x8(MyImage im)
+        {
+            List<Pixel[,]> matrices = new List<Pixel[,]>();
+            for (int i = 0; i < (im.hauteur+7)/8; i += 8)
+            {
+                for (int j = 0; j < (im.largeur+7)/8; j += 8)
+                {
+                    Pixel[,] matrice = new Pixel[8, 8];
+                    for (int x = 0; x < 8; x++)
+                    {
+                        for (int y = 0; y < 8; y++)
+                        {
+                            matrice[x, y] = im.image[i + x, j + y];
+                        }
+                    }
+                    matrices.Add(matrice);
+                }
+            }
+            return matrices;
+        }
+
+        public void DCT(List<Pixel[,]> matrices, MyImage im)
+        {
+            foreach (Pixel[,] matrice in matrices)
+            {
+                for(int i = 0; i < 8; i++)
+                {
+                    for(int j = 0; j < 8; j++)
+                    {
+                        Pixel p = matrice[i, j];    
+                        byte red = (byte)(p.R - 128);
+                        byte green = (byte)(p.G - 128);
+                        byte blue = (byte)(p.B - 128);
+                        matrice[i, j] = new Pixel(red, green, blue);
+                    }
+                }
+                double[,] dct = new double[8, 8];
+                double ci, cj, dct1, somme;
+                for (int u = 0; u < 8; u++)
+                {
+                    for (int v = 0; v < 8; v++)
+                    {
+                        if (u == 0)
+                        {
+                            ci = 1 / Math.Sqrt(8);
+                        }
+                        else
+                        {
+                            ci = Math.Sqrt(2) / Math.Sqrt(8);
+                        }
+                        if (v == 0)
+                        {
+                            cj = 1 / Math.Sqrt(8);
+                        }
+                        else
+                        {
+                            cj = Math.Sqrt(2) / Math.Sqrt(8);
+                        }
+                        somme = 0;
+                        for (int x = 0; x < 8; x++)
+                        {
+                            for (int y = 0; y < 8; y++)
+                            {
+                                dct1 = matrice[x, y].R * Math.Cos((2 * x + 1) * u * Math.PI / 16) * Math.Cos((2 * y + 1) * v * Math.PI / 16);
+                                somme += dct1;
+                            }
+                        }
+                        dct[u, v] = ci * cj * somme; 
+                    }
+                }
+
+                //for(int i =0; i < 8; i++)
+                //{
+                //    for(int j= 0; j < 8; j++)
+                //    {
+                //        Console.Write(dct[i, j] + " ");
+                //    }
+                //    Console.WriteLine();
+                //}
 
 
-
-
-
-
-
-
-
-
+            }
+        }   
+        public void quantification(MyImage im)
+        {
+            List<Pixel[,]> matrices = division_matrices_8x8(im);
+            DCT(matrices, im);
+            int[,] q = {
+                            { 16, 11, 10, 16, 24, 40, 51, 61 },
+                            { 12, 12, 14, 19, 26, 58, 60, 55 },
+                            { 14, 13, 16, 24, 40, 57, 69, 56 },
+                            { 14, 17, 22, 29, 51, 87, 80, 62 },
+                            { 18, 22, 37, 56, 68, 109, 103, 77 },
+                            { 24, 35, 55, 64, 81, 104, 113, 92 },
+                            { 49, 64, 78, 87, 103, 121, 120, 101 },
+                            { 72, 92, 95, 98, 112, 100, 103, 99 } };
+            foreach (Pixel[,] matrice in matrices)
+            {
+                for(int i = 0; i < 8; i++)
+                {
+                    for(int j = 0; j < 8; j++)
+                    {
+                        Pixel p = matrice[i, j];    
+                        byte red = (byte)(p.R / q[i, j]);
+                        byte green = (byte)(p.G / q[i, j]);
+                        byte blue = (byte)(p.B / q[i, j]);
+                        matrice[i, j] = new Pixel(red, green, blue);
+                    }
+                }
+            }       
+        }
 
 
     }

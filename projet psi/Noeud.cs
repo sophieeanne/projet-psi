@@ -17,8 +17,21 @@ namespace projet_psi
         {
             this.pixel = pixel;
             this.frequence = frequence;
-            this.gauche = null;
-            this.droit = null;
+        }
+
+        public Noeud(Noeud noeud1, Noeud noeud2)
+        {
+            if(noeud1.frequence < noeud2.frequence)
+            {
+                gauche = noeud1;
+                droit = noeud2;
+            }
+            else
+            {
+                gauche = noeud2;
+                droit = noeud1;
+            }
+            frequence = noeud1.frequence + noeud2.frequence;
         }
         //constructeur de la classe Noeud
         public Noeud(int frequence, Noeud gauche, Noeud droit)
