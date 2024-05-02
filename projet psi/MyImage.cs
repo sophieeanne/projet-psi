@@ -412,54 +412,52 @@ namespace projet_psi
         /// <returns></returns>
         public MyImage Rotation(int angle, MyImage img)
         {
-            if (img.image == null)
+            if(img.image == null)
             {
                 return null;
             }
-
             //transformer les angles en radian
-            double rad = angle * Math.PI / 180.0;
+            double rad = angle * Math.PI / 180;
             double cosT = Math.Cos(rad);
             double sinT = Math.Sin(rad);
 
-            //calcule les nouvelles dimensions de l'image (Math.Ceiling permet d'arrondir à l'entier supérieur)
-            int nv_larg = (int)Math.Round(Math.Abs(img.largeur * cosT) + Math.Abs(img.hauteur * sinT));
-            int nv_haut = (int)Math.Round(Math.Abs(img.largeur * sinT) + Math.Abs(img.hauteur * cosT));
-            
-            //calcule du centre l'image
-            int ox = img.largeur / 2;
-            int oy = img.hauteur / 2;
+            //calcule les nouvelles dimensions de l'image 
+            int nv_largeur = (int)(Math.Abs(img.largeur * cosT) + Math.Abs(img.hauteur * sinT));
+            int nv_hauteur = (int)(Math.Abs(img.largeur * sinT) + Math.Abs(img.hauteur * cosT));
 
             //initialisation de la matrice de pixels
-            Pixel[,] imrot = new Pixel[nv_haut, nv_larg];
+            Pixel[,] imrot = new Pixel[nv_hauteur, nv_largeur];
 
-            //remplir la matrice en blanc(utile si l'angle n'est pas 90°)
-            for (int i = 0; i < nv_haut; i++)
-            {
-                for (int j = 0; j < nv_larg; j++)
-                {
-                    imrot[i, j] = new Pixel(255, 255, 255);
-                }
-            }
+            //on calcule le centre de l'image originelle
+            int x0 = img.largeur / 2;
+            int y0 = img.hauteur / 2;
 
-            for (int i = 0; i < img.hauteur; i++)
+            //on calcule le centre de l'image avec rotation
+            int x1 = nv_largeur / 2;
+            int y1 = nv_hauteur / 2;
+
+            for (int i = 0; i < nv_hauteur; i++)
             {
-                for (int j = 0; j < img.largeur; j++)
+                for (int j = 0; j < nv_largeur; j++)
                 {
-                    //rotation par rapport au centre de la matrice : on mutliplie coordonnée par la matrice de rotation
-                    int x = (int)Math.Round(cosT * (j - ox) - sinT * (i - oy) + nv_larg / 2.0);
-                    int y = (int)Math.Round(sinT * (j - ox) + cosT * (i - oy) + nv_haut / 2.0);
-                    //on vérifie si c'est dans les dimensions de l'image
-                    if (x >= 0 && y >= 0 && x < nv_larg && y < nv_haut)
+                    //on mutliplie par la matrice de rotation, on fait une rotation autour du centre de l'image
+                    int x = (int)((j - x1) * cosT + (i - y1) * sinT + x0);
+                    int y = (int)((i - y1) * cosT - (j - x1) * sinT + y0);
+
+                    if (x >= 0 && x < img.largeur && y >= 0 && y < img.hauteur)
                     {
-                        imrot[y, x] = img.image[i, j]; 
+                        imrot[i, j] = img.image[y, x];
+                    }
+                    else
+                    {
+                        imrot[i, j] = new Pixel(255, 255, 255);
                     }
                 }
             }
-            return Enregistrer_Image(imrot, nv_larg, nv_haut, "images/Sortie.bmp","image avec rotation");
-           
-        }
+            return Enregistrer_Image(imrot, nv_largeur, nv_hauteur, "images/Sortie.bmp", "image avec rotation");
 
+
+        }
 
        /// <summary>
        /// enregistre une image dans un fichier
