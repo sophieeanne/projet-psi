@@ -7,8 +7,8 @@ MyImage image2 = new MyImage("images/coco.bmp");
 
 //Test_Rotation(image);
 //Test_Codage(image2, image); 
-//Test_Decodage(image, image2);
-Test_Convolution(image2);
+Test_Decodage(image, image2);
+//Test_Convolution(image2);
 //TestMandelbrot();
 //TestJulia();
 //TestRotationnel(image2);
