@@ -702,16 +702,117 @@ namespace projet_psi
             Enregistrer_Image(pixels, largeur, hauteur, "images/Sortie.bmp", "sous_echantillonage_420");
         }
 
+        public List<Pixel[,]> division_matrices_8x8(MyImage im)
+        {
+            List<Pixel[,]> matrices = new List<Pixel[,]>();
+            for (int i = 0; i < (im.hauteur+7)/8; i += 8)
+            {
+                for (int j = 0; j < (im.largeur+7)/8; j += 8)
+                {
+                    Pixel[,] matrice = new Pixel[8, 8];
+                    for (int x = 0; x < 8; x++)
+                    {
+                        for (int y = 0; y < 8; y++)
+                        {
+                            matrice[x, y] = im.image[i + x, j + y];
+                        }
+                    }
+                    matrices.Add(matrice);
+                }
+            }
+            return matrices;
+        }
+
+        public void DCT(List<Pixel[,]> matrices, MyImage im)
+        {
+            foreach (Pixel[,] matrice in matrices)
+            {
+                for(int i = 0; i < 8; i++)
+                {
+                    for(int j = 0; j < 8; j++)
+                    {
+                        Pixel p = matrice[i, j];    
+                        byte red = (byte)(p.R - 128);
+                        byte green = (byte)(p.G - 128);
+                        byte blue = (byte)(p.B - 128);
+                        matrice[i, j] = new Pixel(red, green, blue);
+                    }
+                }
+                double[,] dct = new double[8, 8];
+                double ci, cj, dct1, somme;
+                for (int u = 0; u < 8; u++)
+                {
+                    for (int v = 0; v < 8; v++)
+                    {
+                        if (u == 0)
+                        {
+                            ci = 1 / Math.Sqrt(8);
+                        }
+                        else
+                        {
+                            ci = Math.Sqrt(2) / Math.Sqrt(8);
+                        }
+                        if (v == 0)
+                        {
+                            cj = 1 / Math.Sqrt(8);
+                        }
+                        else
+                        {
+                            cj = Math.Sqrt(2) / Math.Sqrt(8);
+                        }
+                        somme = 0;
+                        for (int x = 0; x < 8; x++)
+                        {
+                            for (int y = 0; y < 8; y++)
+                            {
+                                dct1 = matrice[x, y].R * Math.Cos((2 * x + 1) * u * Math.PI / 16) * Math.Cos((2 * y + 1) * v * Math.PI / 16);
+                                somme += dct1;
+                            }
+                        }
+                        dct[u, v] = ci * cj * somme; 
+                    }
+                }
+
+                //for(int i =0; i < 8; i++)
+                //{
+                //    for(int j= 0; j < 8; j++)
+                //    {
+                //        Console.Write(dct[i, j] + " ");
+                //    }
+                //    Console.WriteLine();
+                //}
 
 
-
-
-
-
-
-
-
-
+            }
+        }   
+        public void quantification(MyImage im)
+        {
+            List<Pixel[,]> matrices = division_matrices_8x8(im);
+            DCT(matrices, im);
+            int[,] q = {
+                            { 16, 11, 10, 16, 24, 40, 51, 61 },
+                            { 12, 12, 14, 19, 26, 58, 60, 55 },
+                            { 14, 13, 16, 24, 40, 57, 69, 56 },
+                            { 14, 17, 22, 29, 51, 87, 80, 62 },
+                            { 18, 22, 37, 56, 68, 109, 103, 77 },
+                            { 24, 35, 55, 64, 81, 104, 113, 92 },
+                            { 49, 64, 78, 87, 103, 121, 120, 101 },
+                            { 72, 92, 95, 98, 112, 100, 103, 99 } };
+            foreach (Pixel[,] matrice in matrices)
+            {
+                for(int i = 0; i < 8; i++)
+                {
+                    for(int j = 0; j < 8; j++)
+                    {
+                        Pixel p = matrice[i, j];    
+                        byte red = (byte)(p.R / q[i, j]);
+                        byte green = (byte)(p.G / q[i, j]);
+                        byte blue = (byte)(p.B / q[i, j]);
+                        matrice[i, j] = new Pixel(red, green, blue);
+                    }
+                }
+            }       
+        }
 
 
     }
