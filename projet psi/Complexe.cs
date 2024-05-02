@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace projet_psi
 {
-    internal class Complex
+    public class Complex
     {
         public double Re { get; set; }
         public double Im { get; set; }

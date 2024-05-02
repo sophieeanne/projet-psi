@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace projet_psi
 {
-    internal class MyImage
+    public class MyImage
     {
         int taille;
         int tailleOffset;
@@ -17,6 +17,17 @@ namespace projet_psi
         int hauteur;
         int nbBits;
         Pixel[,] image;
+
+        //constructeur sans paramètre
+        public MyImage()
+        {
+            taille = 0;
+            tailleOffset = 0;
+            largeur = 0;
+            hauteur = 0;
+            nbBits = 0;
+            image = null;
+        }
         public MyImage(string myfile)
         {
             byte[] file = File.ReadAllBytes(myfile);
