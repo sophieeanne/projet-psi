@@ -13,12 +13,13 @@ namespace projet_psi
         public Noeud gauche;
         public Noeud droit;
 
+        //initialisation d'un noeud avec un pixel et une fréquence
         public Noeud(Pixel pixel, int frequence)
         {
             this.pixel = pixel;
             this.frequence = frequence;
         }
-
+        //initialisation d'un noeud avec deux noeuds
         public Noeud(Noeud noeud1, Noeud noeud2)
         {
             if(noeud1.frequence < noeud2.frequence)

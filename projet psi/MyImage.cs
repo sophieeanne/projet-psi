@@ -802,6 +802,7 @@ namespace projet_psi
         {
             foreach (Pixel[,] matrice in matrices)
             {
+                //on soustrait 128 de chaque pixel pour centrer autour de 0
                 for(int i = 0; i < 8; i++)
                 {
                     for(int j = 0; j < 8; j++)
@@ -815,6 +816,7 @@ namespace projet_psi
                 }
                 double[,] dct = new double[8, 8];
                 double ci, cj, dct1, somme;
+                //on applique la formule mathématique de la DCT
                 for (int u = 0; u < 8; u++)
                 {
                     for (int v = 0; v < 8; v++)
@@ -880,6 +882,7 @@ namespace projet_psi
                             { 72, 92, 95, 98, 112, 100, 103, 99 } };
             foreach (Pixel[,] matrice in matrices)
             {
+                //on divise chaque pixel par la valeur de la matrice de quantification
                 for(int i = 0; i < 8; i++)
                 {
                     for(int j = 0; j < 8; j++)
