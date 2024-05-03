@@ -56,12 +56,12 @@ do
             break;
         case 2:
             Console.Clear();
-            Test_NoirEtBlanc(image);
+            Test_NoirEtBlanc(image2);
             break;
         case 3:
             Console.Clear();
             Console.WriteLine("Test de la fonction Rotation");
-            Test_Rotation(image2);
+            Test_Rotation(image);
             break;
         case 4:
             Console.Clear();
@@ -71,7 +71,7 @@ do
             break;
         case 5:
             Console.Clear();
-            Test_Convolution(image2);
+            Test_Convolution(image);
             break;
         case 6:
             Console.Clear();
@@ -92,7 +92,7 @@ do
             int choix4 = Convert.ToInt32(Console.ReadLine());
             if(choix4 == 1)
             {
-                Test_Codage(image2, image);
+                Test_Codage(image, image2);
             }
             else
             {
@@ -101,7 +101,7 @@ do
             break;
         case 8 :
             Console.Clear();
-            TestRotationnel(image2);
+            TestRotationnel(image);
             break;
     }
     Console.WriteLine("Voulez vous continuer (O/N) ?");
