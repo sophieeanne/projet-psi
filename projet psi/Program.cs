@@ -106,14 +106,28 @@ do
             }
             break;
         case 8 :
-            Console.Clear();
-            TestRotationnel(image2);
+            Console.WriteLine("1. Rotationnel \n2. Négatif");
+            int choix5 = Convert.ToInt32(Console.ReadLine());
+            if (choix5 == 1)
+            {
+                TestRotationnel(image);
+            }
+            else
+            {
+                Test_Negatif(image);
+            }
             break;
     }
     Console.WriteLine("Voulez vous continuer (O/N) ?");
     choix = Console.ReadLine();
 } while (choix == "O" || choix == "o");
 
+static void Test_Negatif(MyImage image)
+{
+    MyImage imageNegatif = image.Negatif();
+    imageNegatif.From_Image_To_File("images/Negatif.bmp");
+    Console.WriteLine("regardez l'image négatif");
+}
 static void Test_NoirEtBlanc(MyImage image)
 {
     MyImage imagebw = image.NoirEtBlanc();
