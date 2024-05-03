@@ -61,7 +61,8 @@ do
             Test_Grayscale(image);
             break;
         case 2:
-            //image2.NoirEtBlanc().From_Image_To_File("images/Sortie.bmp");
+            Console.Clear();
+            Test_NoirEtBlanc(image);
             break;
         case 3:
             Console.Clear();
@@ -101,7 +102,7 @@ do
             }
             else
             {
-                Test_Decodage(image, image);
+                Test_Decodage(image, image2);
             }
             break;
         case 8 :
@@ -113,7 +114,12 @@ do
     choix = Console.ReadLine();
 } while (choix == "O" || choix == "o");
 
-
+static void Test_NoirEtBlanc(MyImage image)
+{
+    MyImage imagebw = image.NoirEtBlanc();
+    imagebw.From_Image_To_File("images/BW.bmp");
+    Console.WriteLine("regardez l'image en noir et blanc");
+}
 static void Test_Grayscale(MyImage image_originale)
 {
     MyImage image = image_originale.Grayscale();
