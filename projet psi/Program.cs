@@ -100,6 +100,7 @@ do
             }
             break;
         case 8 :
+            Console.Clear();
             Console.WriteLine("1. Rotationnel \n2. Négatif");
             int choix5 = Convert.ToInt32(Console.ReadLine());
             if (choix5 == 1)
@@ -133,7 +134,7 @@ static void Test_NoirEtBlanc(MyImage image)
 static void Test_Grayscale(MyImage image_originale)
 {
     MyImage image = image_originale.Grayscale();
-    image.From_Image_To_File("images/Sortie.bmp");
+    image.From_Image_To_File("images/Grayscale.bmp");
     Console.WriteLine("regardez l'image en noir et blanc");
 }
 static void Test_Convolution(MyImage image)
