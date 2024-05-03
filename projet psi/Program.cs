@@ -9,14 +9,8 @@ string choix = "";
 string choix2;
 
 Console.WriteLine("Bienvenue dans le projet de traitement d'images");
-Console.WriteLine("Voici les images initialisées :");
-Console.WriteLine("image 1 : Test ");
-Console.WriteLine("image 2 : Test");
-Console.WriteLine("Voulez vous les changer (O/N) ?");
-choix2 = Console.ReadLine();
-if (choix2 == "O" || choix2 == "o")
-{
-    Console.WriteLine("Quelle image voulez vous ? \n1. images/Test.bmp \n2. images/coco.bmp \n3. images/lac.bmp ?");
+Console.WriteLine("Initialisions les images dans un premier temps :");
+  Console.WriteLine("Quelle première image voulez vous ? \n1. images/Test.bmp \n2. images/coco.bmp \n3. images/lac.bmp ?");
     int c = Convert.ToInt32(Console.ReadLine());
     switch (c)
     {
@@ -44,7 +38,7 @@ if (choix2 == "O" || choix2 == "o")
             image2 = new MyImage("images/lac.bmp");
             break;
     }
-}
+
 
 do
 {
@@ -121,6 +115,8 @@ do
     Console.WriteLine("Voulez vous continuer (O/N) ?");
     choix = Console.ReadLine();
 } while (choix == "O" || choix == "o");
+Console.Clear();
+Console.WriteLine("Merci d'avoir utilisé notre programme :)");
 
 static void Test_Negatif(MyImage image)
 {
