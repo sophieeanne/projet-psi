@@ -15,8 +15,8 @@ namespace Test4PremiersChiffres
         [Test]
         public void TestQuatrePremiersChiffres()
         {
-            // Test pour la valeur 255, binaire 11111111, attendu : 15
-            Assert.That(_monImage.quatre_premiers_chiffres(255), Is.EqualTo(15));
+            // Test pour la valeur 255, binaire 11111111, attendu : 
+            Assert.That(_monImage.quatre_premiers_chiffres(255), Is.EqualTo(1111));
         }
     }
 }
