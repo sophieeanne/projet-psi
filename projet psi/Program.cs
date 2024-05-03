@@ -44,7 +44,7 @@ do
 {
     Console.Clear();
     Console.WriteLine("Voici les différentes fonctions du programme");
-    Console.WriteLine("1. Grayscale \n2. Noir et blanc (ne choisis pas mtn je trouve pas) \n3. Rotation \n4. Agrandissement \n5. Matrice de convolution \n6. Créer une image décrivant une fractale \n7. Coder et Décoder une image \n8. Innovation");
+    Console.WriteLine("1. Grayscale \n2. Noir et blanc \n3. Rotation \n4. Agrandissement \n5. Matrice de convolution \n6. Créer une image décrivant une fractale \n7. Coder et Décoder une image \n8. Innovation");
     Console.WriteLine("Entrez le numéro de la fonction que vous voulez tester");
     int choix1 = Convert.ToInt32(Console.ReadLine());
     switch(choix1)
