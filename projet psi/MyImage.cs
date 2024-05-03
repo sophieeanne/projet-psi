@@ -525,7 +525,19 @@ namespace projet_psi
             nvimage.From_Image_To_File("images/image_"+nomfichier+".bmp");
             return nvimage;
         }
-
+        public MyImage Negatif()
+        {
+            for (int i = 0; i < hauteur; i++)
+            {
+                for (int j = 0; j < largeur; j++)
+                {
+                    Pixel p = image[i, j];
+                    image[i, j] = new Pixel((byte)(255 - p.R), (byte)(255 - p.G), (byte)(255 - p.B));
+                }
+            }
+            MyImage im = new MyImage(image, largeur, hauteur);
+            return im;
+        }
         /// <summary>
         /// méthode pour coder une image
         /// </summary>
