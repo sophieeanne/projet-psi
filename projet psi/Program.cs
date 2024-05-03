@@ -245,7 +245,7 @@ static void TestMandelbrot()
     //Console.WriteLine("entrez le seuil");
     //int seuil = Convert.ToInt32(Console.ReadLine());
     int seuil = 16;
-    Console.WriteLine("entrez l'echelle par exempl 0.001");
+    Console.WriteLine("entrez l'echelle par exempl 0.05");
     double echelle = Convert.ToDouble(Console.ReadLine());
 
     Console.WriteLine(echelle);
