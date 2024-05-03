@@ -56,12 +56,12 @@ do
             break;
         case 2:
             Console.Clear();
-            Test_NoirEtBlanc(image);
+            Test_NoirEtBlanc(image2);
             break;
         case 3:
             Console.Clear();
             Console.WriteLine("Test de la fonction Rotation");
-            Test_Rotation(image2);
+            Test_Rotation(image);
             break;
         case 4:
             Console.Clear();
@@ -71,7 +71,7 @@ do
             break;
         case 5:
             Console.Clear();
-            Test_Convolution(image2);
+            Test_Convolution(image);
             break;
         case 6:
             Console.Clear();
@@ -92,7 +92,7 @@ do
             int choix4 = Convert.ToInt32(Console.ReadLine());
             if(choix4 == 1)
             {
-                Test_Codage(image2, image);
+                Test_Codage(image, image2);
             }
             else
             {
@@ -100,6 +100,7 @@ do
             }
             break;
         case 8 :
+            Console.Clear();
             Console.WriteLine("1. Rotationnel \n2. Négatif");
             int choix5 = Convert.ToInt32(Console.ReadLine());
             if (choix5 == 1)
@@ -133,7 +134,7 @@ static void Test_NoirEtBlanc(MyImage image)
 static void Test_Grayscale(MyImage image_originale)
 {
     MyImage image = image_originale.Grayscale();
-    image.From_Image_To_File("images/Sortie.bmp");
+    image.From_Image_To_File("images/Grayscale.bmp");
     Console.WriteLine("regardez l'image en noir et blanc");
 }
 static void Test_Convolution(MyImage image)
