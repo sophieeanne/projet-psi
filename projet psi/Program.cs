@@ -5,30 +5,129 @@ using static System.Net.Mime.MediaTypeNames;
 MyImage image = new MyImage("images/Test.bmp");
 MyImage image2 = new MyImage("images/Test.bmp");
 
-//Test_Rotation(image2);
-//Test_Codage(image2, image); 
-//Test_Decodage(image, image);
-//Test_Convolution(image2);
-//TestMandelbrot();
-//TestJulia();
-//TestRotationnel(image2);
-//image2.sous_echantillonage_420(image2);
-//Test_Grayscale(image2);
-//Console.WriteLine("sortie");
+string choix = "";
+string choix2;
+
+Console.WriteLine("Bienvenue dans le projet de traitement d'images");
+Console.WriteLine("Voici les images initialisées :");
+Console.WriteLine("image 1 : Test ");
+Console.WriteLine("image 2 : Test");
+Console.WriteLine("Voulez vous les changer (O/N) ?");
+choix2 = Console.ReadLine();
+if (choix2 == "O" || choix2 == "o")
+{
+    Console.WriteLine("Quelle image voulez vous ? \n1. images/Test.bmp \n2. images/coco.bmp \n3. images/lac.bmp ?");
+    int c = Convert.ToInt32(Console.ReadLine());
+    switch (c)
+    {
+        case 1:
+            image = new MyImage("images/Test.bmp");
+            break;
+        case 2:
+            image = new MyImage("images/coco.bmp");
+            break;
+        case 3:
+            image = new MyImage("images/lac.bmp");
+            break;
+    }
+    Console.WriteLine("Quelle deuxième image voulez vous ? \n1. images/Test.bmp \n2. images/coco.bmp \n3. images/lac.bmp ?");
+    int d = Convert.ToInt32(Console.ReadLine());
+    switch (d)
+    {
+        case 1:
+            image2 = new MyImage("images/Test.bmp");
+            break;
+        case 2:
+            image2 = new MyImage("images/coco.bmp");
+            break;
+        case 3:
+            image2 = new MyImage("images/lac.bmp");
+            break;
+    }
+}
+
+do
+{
+    Console.Clear();
+    Console.WriteLine("Voici les différentes fonctions du programme");
+    Console.WriteLine("1. Grayscale \n2. Noir et blanc (ne choisis pas mtn je trouve pas) \n3. Rotation \n4. Agrandissement \n5. Matrice de convolution \n6. Créer une image décrivant une fractale \n7. Coder et Décoder une image \n8. Innovation");
+    Console.WriteLine("Entrez le numéro de la fonction que vous voulez tester");
+    int choix1 = Convert.ToInt32(Console.ReadLine());
+    switch(choix1)
+    {
+        case 1:
+            Console.Clear();
+            Console.WriteLine("Test de la fonction Grayscale");
+            Test_Grayscale(image);
+            break;
+        case 2:
+            //image2.NoirEtBlanc().From_Image_To_File("images/Sortie.bmp");
+            break;
+        case 3:
+            Console.Clear();
+            Console.WriteLine("Test de la fonction Rotation");
+            Test_Rotation(image2);
+            break;
+        case 4:
+            Console.Clear();
+            Console.WriteLine("Entrez le facteur d'agrandissement");
+            double facteur = Convert.ToDouble(Console.ReadLine());
+            TestAgrandirImage(image2, facteur);
+            break;
+        case 5:
+            Console.Clear();
+            Test_Convolution(image2);
+            break;
+        case 6:
+            Console.Clear();
+            Console.WriteLine("1. Mandelbrot \n2. Julia");
+            int choix3 = Convert.ToInt32(Console.ReadLine());
+            if(choix3 == 1)
+            {
+                TestMandelbrot();
+            }
+            else
+            {
+                TestJulia();
+            }
+            break;
+        case 7:
+            Console.Clear();
+            Console.WriteLine("1. Coder \n2. Décoder");
+            int choix4 = Convert.ToInt32(Console.ReadLine());
+            if(choix4 == 1)
+            {
+                Test_Codage(image2, image);
+            }
+            else
+            {
+                Test_Decodage(image, image);
+            }
+            break;
+        case 8 :
+            Console.Clear();
+            TestRotationnel(image2);
+            break;
+    }
+    Console.WriteLine("Voulez vous continuer (O/N) ?");
+    choix = Console.ReadLine();
+} while (choix == "O" || choix == "o");
+
 
 static void Test_Grayscale(MyImage image_originale)
 {
     MyImage image = image_originale.Grayscale();
     image.From_Image_To_File("images/Sortie.bmp");
+    Console.WriteLine("regardez l'image en noir et blanc");
 }
 static void Test_Convolution(MyImage image)
 {
     double[,] sobelVertical = new double[,]
-    {
+{
         { -1, 0, 1 },
         { -2, 0, 2 },
         { -1, 0, 1 }
-    };
+};
     double[,] MatriceFlou = new double[,]
     {
         { 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0 },
@@ -41,8 +140,35 @@ static void Test_Convolution(MyImage image)
         {0,0,0 },
         {-1,0,1 }
     };
-    image.AppliquerMatriceConvolution(MatriceFlou).From_Image_To_File("images/Sortie.bmp");
-    Console.WriteLine("regardez l'image convoluée");
+    double[,] sobelHorizontal = new double[,]
+    {
+        { -1, -2, -1 },
+        { 0, 0, 0 },
+        { 1, 2, 1 }
+    };
+    Console.WriteLine("Voici les matrices de convolution disponibles :");
+    Console.WriteLine("1. Sobel Horizontal \n2. Sobel Vertical \n3. Matrice Flou \n4. Détection de contours");
+    Console.WriteLine("Entrez le numéro de la matrice de convolution que vous voulez utiliser");
+    int choix = Convert.ToInt32(Console.ReadLine());
+    switch (choix)
+    {
+        case 1:
+            image.AppliquerMatriceConvolution(sobelVertical).From_Image_To_File("images/Sortie.bmp");
+            Console.WriteLine("regardez l'image convoluée");
+            break;
+        case 2:
+            image.AppliquerMatriceConvolution(sobelHorizontal).From_Image_To_File("images/Sortie.bmp");
+            Console.WriteLine("regardez l'image convoluée");
+            break;
+        case 3:
+            image.AppliquerMatriceConvolution(MatriceFlou).From_Image_To_File("images/Sortie.bmp");
+            Console.WriteLine("regardez l'image convoluée");
+            break;
+        case 4:
+            image.AppliquerMatriceConvolution(detectioncontours).From_Image_To_File("images/Sortie.bmp");
+            Console.WriteLine("regardez l'image convoluée");
+            break;
+    }
 }       
 static void Test_Rotation(MyImage image)
 {
@@ -69,7 +195,7 @@ static void Test_Decodage(MyImage image, MyImage imagebis)
 
 static void TestJulia()
 {
-    //Console.WriteLine("entrez Re(c)");
+    Console.WriteLine("entrez Re(c)");
     //double a = Convert.ToDouble(Console.ReadLine());
     double a = (0-0.70176);
     //Console.WriteLine("entrez Im(c)");
