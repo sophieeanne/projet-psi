@@ -18,7 +18,9 @@ namespace projet_psi
         int nbBits;
         Pixel[,] image;
 
-        //constructeur sans paramètre
+        /// <summary>
+        /// constructeur sans paramètre
+        /// </summary>
         public MyImage()
         {
             taille = 0;
@@ -28,6 +30,10 @@ namespace projet_psi
             nbBits = 0;
             image = null;
         }
+        /// <summary>
+        ///  Constructeur pour créer une instance MyImage à partir d'un fichier
+        /// </summary>
+        /// <param name="myfile"></param> nom du fichier
         public MyImage(string myfile)
         {
             byte[] file = File.ReadAllBytes(myfile);
@@ -675,7 +681,10 @@ namespace projet_psi
             }   
             Enregistrer_Image(pixels, largeur, hauteur, "images/Sortie.bmp", "sous_echantillonage_422");
         }
-
+        /// <summary>
+        ///  Sous échantillonnage 4:2:0 d'une image
+        /// </summary>
+        /// <param name="im"></param> image à sous échantillonner
         public void sous_echantillonage_420(MyImage im)
         {
             im.Convertir_YCbCR();
@@ -712,7 +721,11 @@ namespace projet_psi
             }
             Enregistrer_Image(pixels, largeur, hauteur, "images/Sortie.bmp", "sous_echantillonage_420");
         }
-
+        /// <summary>
+        /// fonction pour diviser une image en matrices 8x8
+        /// </summary>
+        /// <param name="im"></param> image à diviser
+        /// <returns> matrices </returns> liste de matrices 8x8
         public List<Pixel[,]> division_matrices_8x8(MyImage im)
         {
             List<Pixel[,]> matrices = new List<Pixel[,]>();
@@ -733,7 +746,11 @@ namespace projet_psi
             }
             return matrices;
         }
-
+        /// <summary>
+        /// fonction discrete cosine transform (DCT) pour une liste de matrices 8x8
+        /// </summary>
+        /// <param name="matrices"></param>
+        /// <param name="im"></param>
         public void DCT(List<Pixel[,]> matrices, MyImage im)
         {
             foreach (Pixel[,] matrice in matrices)
@@ -796,6 +813,11 @@ namespace projet_psi
 
             }
         }   
+
+        /// <summary>
+        ///  fonction pour quantifier une image 
+        /// </summary>
+        /// <param name="im"></param>   image à quantifier
         public void quantification(MyImage im)
         {
             List<Pixel[,]> matrices = division_matrices_8x8(im);
