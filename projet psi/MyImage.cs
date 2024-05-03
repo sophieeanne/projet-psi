@@ -549,8 +549,8 @@ namespace projet_psi
         /// méthode pour décoder une autre image
         /// </summary>
         /// <param name="image"></param>
-        /// <returns></returns>
-        public MyImage Decoder_Image2(MyImage image)
+        /// <returns> </returns> 
+        public MyImage Decoder_Image2(MyImage image) 
         {
             Pixel[,] image2 = new Pixel[image.hauteur, image.largeur];
             for (int i = 0; i < image.hauteur; i++)
@@ -564,7 +564,7 @@ namespace projet_psi
                     image2[i, j] = new Pixel((byte)r, (byte)g, (byte)b);
                 }
             }
-            return Enregistrer_Image(image2, image.largeur, image.hauteur, "images/Sortie.bmp","image_décodée_2");
+            return Enregistrer_Image(image2, image.largeur, image.hauteur, "images/Sortie.bmp","image_décodée_2"); //enregistrer l'image dans un fichier 
         }
 
         /// <summary>

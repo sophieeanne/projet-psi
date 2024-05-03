@@ -9,7 +9,7 @@ namespace TestProject1
         public void TestFromImageToFile()
         {
             // Arrange
-            var image = new MyImage(new Pixel[,] { { new Pixel(255, 255, 255) } }, 1, 1);
+            MyImage image = new MyImage(new Pixel[,] { { new Pixel(255, 255, 255) } }, 1, 1);
             string filePath = "test.bmp";
 
             // Act
@@ -21,20 +21,32 @@ namespace TestProject1
         }
         [Test]
 
-        public void TestDecoderImage1()
+        public void TestDecoderImage2()
         {
             // Arrange
-            var image = new MyImage(new Pixel[,] { { new Pixel(255, 255, 255) } }, 1, 1);
+            MyImage image = new MyImage(new Pixel[,] { { new Pixel(255, 255, 255) } }, 1, 1);
             string filePath = "test.bmp";
             image.From_Image_To_File(filePath);
-            var image2 = new MyImage(new Pixel[,] { { new Pixel(255, 255, 255) } }, 1, 1);
+            MyImage image2 = new MyImage(new Pixel[,] { { new Pixel(255, 255, 255) } }, 1, 1);
             // Act
-            image2.Decoder_Image1(image);
+            image2.Decoder_Image2(image);
 
             // Assert
             Assert.That(image2, Is.EqualTo(image), "Les deux images doivent être égales.");
             File.Delete(filePath); // Cleanup
         }   
+        public void TestDecimalVersBinaire()
+        {
+            // Arrange
+            int decimalNumber = 255;
+            MyImage imageTest = new MyImage(new Pixel[,] { { new Pixel(255, 255, 255) } }, 1, 1);
+            // Act
+            int binaryNumber = imageTest.Decimal_Vers_Binaire(decimalNumber);
+
+            // Assert
+            Assert.That(binaryNumber, Is.EqualTo("11111111"), "La conversion de 255 en binaire doit donner 11111111.");
+        }
+        
 
     }
 }

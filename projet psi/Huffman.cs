@@ -11,7 +11,7 @@ namespace projet_psi
         public Noeud root { get; set;}
         public Dictionary<Pixel, int> fréquences = new Dictionary<Pixel, int>();
         public List<Noeud> feuilles = new List<Noeud>();
-
+       
         public void Algo_Huffman()
         {
             //on prend la valeur de chaque pixel et on l'ajoute à la liste des fréquences
