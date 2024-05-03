@@ -182,6 +182,10 @@ namespace projet_psi
             return octets;
         }
 
+        /// <summary>
+        /// convertit une image en nuance de gris
+        /// </summary>
+        /// <returns></returns>
         public MyImage Grayscale()
         {
             for (int i = 0; i < hauteur; i++)
@@ -638,7 +642,7 @@ namespace projet_psi
             return int.Parse(str);
         }
         /// <summary>
-        /// méthode pour convertir une image en niveaux de gris
+        /// méthode pour convertir une image en crominance
         /// </summary>
         public void Convertir_YCbCR()
         {
@@ -658,6 +662,10 @@ namespace projet_psi
             Enregistrer_Image(pixels, largeur, hauteur, "images/Sortie.bmp", "YCbCr");
         }
         
+        /// <summary>
+        /// sous échantillonage 4:2:2
+        /// </summary>
+        /// <param name="im"></param>
         public void sous_echantillonage_422(MyImage im)
         {
             im.Convertir_YCbCR();
