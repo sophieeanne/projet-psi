@@ -202,6 +202,33 @@ namespace projet_psi
 
         }
         /// <summary>
+        /// Fonction pour transformer une image en noir et blanc
+        /// </summary>
+        /// <returns></returns>
+        public MyImage NoirEtBlanc()
+        {
+            for (int i = 0; i < hauteur; i++)
+            {
+                for (int j = 0; j < largeur; j++)
+                {
+                    Pixel p = image[i, j];
+                    int n = ((int)p.R + (int)p.B + (int)p.G) / 3;
+                    if(n> 150)
+                    {
+                        image[i, j] = new Pixel((byte)255, (byte)255, (byte)255);
+                    }
+                    else
+                    {
+                        image[i, j] = new Pixel((byte)0, (byte)0, (byte)0);
+                    }
+                    
+                }
+            }
+            MyImage im = new MyImage(image, largeur, hauteur);
+            return im;
+
+        }
+        /// <summary>
         /// méthode pour agrandir une image
         /// </summary>
         /// <param name="factor">facteur par lequelle on veut agrandir l'image</param>
